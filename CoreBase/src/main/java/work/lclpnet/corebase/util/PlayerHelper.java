@@ -19,25 +19,18 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.PlayerProfile.TexturesProperty;
 
 public class PlayerHelper {
 
-	@SuppressWarnings("resource")
 	public static GameProfile retrieveGameProfile(String name, boolean forceDownloadNew) {
-		MinecraftServer server = CoreBase.getServer() != null ? CoreBase.getServer() : Minecraft.getInstance().getIntegratedServer();
-		PlayerEntity p = null;
-		if(server != null) {
-			PlayerList pl = server.getPlayerList();
-			p = pl.getPlayerByUsername(name);
-		}
-		
+		PlayerList pl = CoreBase.getServer().getPlayerList();
+		PlayerEntity p = pl.getPlayerByUsername(name);
+
 		if(!forceDownloadNew && p != null) return p.getGameProfile();
 		else
 			try {
