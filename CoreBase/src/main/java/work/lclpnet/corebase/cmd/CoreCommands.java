@@ -2,11 +2,37 @@ package work.lclpnet.corebase.cmd;
 
 import java.util.function.Predicate;
 
+import com.mojang.brigadier.CommandDispatcher;
+
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class CoreCommands {
 
+	public static void registerCommands(CommandDispatcher<CommandSource> dispatcher, boolean dedicatedServer) {
+		new CommandChatClear().register(dispatcher);
+		new CommandChest().register(dispatcher);
+		new CommandInventory().register(dispatcher);
+		new CommandCraft().register(dispatcher);
+		new CommandDay().register(dispatcher);
+		new CommandNight().register(dispatcher);
+		new CommandDie().register(dispatcher);
+		new CommandFeed().register(dispatcher);
+		new CommandHeal().register(dispatcher);
+		new CommandPlayerInfo().register(dispatcher);
+		new CommandRawSay().register(dispatcher);
+		new CommandRename().register(dispatcher);
+		new CommandSpeed().register(dispatcher);
+		new CommandWorldSpawnTp().register(dispatcher);
+		new CommandFly().register(dispatcher);
+		
+		if(dedicatedServer) {
+			new CommandCrash().register(dispatcher);
+			new CommandPing().register(dispatcher);
+			new CommandSudo().register(dispatcher);
+		}
+	}
+	
 	public static boolean permLevel1(CommandSource cs) {
 		return cs.hasPermissionLevel(1);
 	}
