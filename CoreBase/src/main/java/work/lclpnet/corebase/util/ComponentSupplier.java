@@ -1,9 +1,5 @@
 package work.lclpnet.corebase.util;
 
-import java.lang.reflect.Field;
-import java.util.Formatter;
-import java.util.regex.Pattern;
-
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -11,7 +7,6 @@ import net.minecraft.util.text.TextFormatting;
 public class ComponentSupplier {
 
 	private String prefix;
-	private Pattern FORMATTER_PATTERN;
 	
 	public ComponentSupplier() {
 		this(null);
@@ -19,22 +14,6 @@ public class ComponentSupplier {
 	
 	public ComponentSupplier(String prefix) {
 		this.prefix = prefix;
-		
-		try {
-			Field f = Formatter.class.getDeclaredField("fsPattern");
-			boolean b = f.isAccessible();
-			f.setAccessible(true);
-			
-			Object pattern = f.get(null);
-			
-			f.setAccessible(b);
-			
-			FORMATTER_PATTERN = (Pattern) pattern;
-		} catch (ReflectiveOperationException e) {
-			e.printStackTrace();
-			FORMATTER_PATTERN = null;
-		}
-		if(FORMATTER_PATTERN == null) throw new IllegalStateException("Pattern not found");
 	}
 	
 	public ITextComponent getPrefix() {

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import work.lclpnet.corebase.cmd.CoreCommands;
+import work.lclpnet.corebase.util.ComponentHelper;
 import work.lclpnet.corebase.util.ComponentSupplier;
 
 @Mod(CoreBase.MODID)
@@ -45,6 +47,7 @@ public class CoreBase {
 		LOGGER.info("CoreBase starting...");
 		server = e.getServer();
 		CoreCommands.registerCommands(e.getCommandDispatcher(), server instanceof DedicatedServer);
+		System.out.println(ComponentHelper.getFormattingChar(TextFormatting.YELLOW));
 	}
 
 	@SubscribeEvent

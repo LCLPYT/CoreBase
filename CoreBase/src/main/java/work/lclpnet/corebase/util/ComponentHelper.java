@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import work.lclpnet.corebase.util.ComponentSupplier.TextFormat;
 
 public class ComponentHelper {
@@ -149,14 +150,10 @@ public class ComponentHelper {
 
 	public static char getFormattingChar(TextFormatting format) {
 		try {
-			Field f = TextFormatting.class.getDeclaredField("formattingCode");
-			boolean accessible = f.isAccessible();
-			if(!accessible) f.setAccessible(true);
-			char c = (char) f.get(format);
-			if(!accessible) f.setAccessible(accessible);
-			return c;
+			Field f = ObfuscationReflectionHelper.findField(TextFormatting.class, "field_96329_z");
+			return (char) f.get(format);
 		} catch (ReflectiveOperationException e) {
-			return 0;
+			return Character.MIN_VALUE;
 		}
 	}
 
