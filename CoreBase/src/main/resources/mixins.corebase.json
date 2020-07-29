@@ -6,6 +6,8 @@
     "package": "work.lclpnet.corebase.asm.mixin",
     "refmap": "corebase.refmap.json",
     "mixins": [
+        "common.MixinTextComponent",
+        "common.MixinStyle"
     ],
     "client": [
     ],
