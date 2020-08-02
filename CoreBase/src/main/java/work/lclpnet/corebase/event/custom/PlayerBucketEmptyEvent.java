@@ -1,4 +1,4 @@
-package work.lclpnet.corebase.event;
+package work.lclpnet.corebase.event.custom;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

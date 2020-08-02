@@ -36,7 +36,7 @@ public class CoreBase {
 
 	private void setup(final FMLCommonSetupEvent event) { //preinit
 		LOGGER.info("CoreBase initializing...");
-
+		
 		LOGGER.info("CoreBase initialized.");
 	}
 

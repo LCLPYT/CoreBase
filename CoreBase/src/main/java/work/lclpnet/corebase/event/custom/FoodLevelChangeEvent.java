@@ -1,4 +1,4 @@
-package work.lclpnet.corebase.event;
+package work.lclpnet.corebase.event.custom;
 
 import javax.annotation.Nullable;
 
@@ -13,6 +13,7 @@ import net.minecraftforge.eventbus.api.Cancelable;
  * This event is This event is {@link Cancelable}
  */
 @Cancelable
+@Deprecated
 public class FoodLevelChangeEvent extends PlayerEvent{
 
 	private int fromLevel, toLevel;

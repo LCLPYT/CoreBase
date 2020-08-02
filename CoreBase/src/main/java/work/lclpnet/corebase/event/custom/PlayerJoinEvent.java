@@ -1,4 +1,4 @@
-package work.lclpnet.corebase.event;
+package work.lclpnet.corebase.event.custom;
 
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraft.entity.player.PlayerEntity;

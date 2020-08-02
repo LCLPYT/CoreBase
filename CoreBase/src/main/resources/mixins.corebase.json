@@ -7,7 +7,8 @@
     "refmap": "corebase.refmap.json",
     "mixins": [
         "common.MixinTextComponent",
-        "common.MixinStyle"
+        "common.MixinStyle",
+        "common.MixinServerPlayNetHandler"
     ],
     "client": [
     ],

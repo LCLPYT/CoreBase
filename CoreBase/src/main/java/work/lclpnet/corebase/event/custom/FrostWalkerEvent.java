@@ -1,4 +1,4 @@
-package work.lclpnet.corebase.event;
+package work.lclpnet.corebase.event.custom;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;

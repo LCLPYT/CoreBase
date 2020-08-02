@@ -1,4 +1,4 @@
-package work.lclpnet.corebase.event;
+package work.lclpnet.corebase.event.custom;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.eventbus.api.Event;
