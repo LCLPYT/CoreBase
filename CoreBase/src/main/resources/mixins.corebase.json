@@ -9,7 +9,8 @@
         "common.MixinTextComponent",
         "common.MixinStyle",
         "common.MixinServerPlayNetHandler",
-        "common.MixinMinecraftServer"
+        "common.MixinMinecraftServer",
+        "common.MixinPlayerList"
     ],
     "client": [
     ],
