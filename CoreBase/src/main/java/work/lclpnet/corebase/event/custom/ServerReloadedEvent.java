@@ -17,5 +17,5 @@ public class ServerReloadedEvent extends Event{
 	public MinecraftServer getServer() {
 		return server;
 	}
-
+	
 }
