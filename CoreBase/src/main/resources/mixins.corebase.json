@@ -11,7 +11,8 @@
         "common.MixinServerPlayNetHandler",
         "common.MixinMinecraftServer",
         "common.MixinPlayerList",
-        "common.MixinLivingEntity"
+        "common.MixinLivingEntity",
+        "common.MixinIceBlock"
     ],
     "client": [
     ],

@@ -68,10 +68,8 @@ public class MixinServerPlayNetHandler {
 		if(event.isCanceled()) fixedLines = new StringTextComponent[astring.length];
 		else fixedLines = event.getLines();
 
-		for(int i = 0; i < astring.length; ++i) {
+		for(int i = 0; i < astring.length; ++i) 
 			signtileentity.setText(i, fixedLines[i] == null ? new StringTextComponent(""): fixedLines[i]);
-			System.out.println("SET " + i + fixedLines[i].toString());
-		}
 
 		return packetIn.getLines();
 	}
