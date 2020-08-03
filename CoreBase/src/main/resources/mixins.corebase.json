@@ -14,7 +14,8 @@
         "common.MixinLivingEntity",
         "common.MixinIceBlock",
         "common.MixinServerWorld",
-        "common.MixinSnowBlock"
+        "common.MixinSnowBlock",
+        "common.MixinArmorStandEntity"
     ],
     "client": [
     ],

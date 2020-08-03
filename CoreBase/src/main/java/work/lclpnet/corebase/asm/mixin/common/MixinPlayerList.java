@@ -28,10 +28,10 @@ public class MixinPlayerList {
 	@Shadow
 	@Final
 	private MinecraftServer server;
-	
+
 	@Shadow
 	public void sendMessage(ITextComponent component) {}
-	
+
 	@Redirect(
 			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerList;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V")
@@ -57,14 +57,14 @@ public class MixinPlayerList {
 			itextcomponent = new TranslationTextComponent("multiplayer.player.joined.renamed", playerIn.getDisplayName(), s);
 		}
 
-        PlayerJoinEvent event = new PlayerJoinEvent(playerIn, itextcomponent.applyTextStyle(TextFormatting.YELLOW));
-        MinecraftForge.EVENT_BUS.post(event);
-        itextcomponent = event.getJoinMessage();
+		PlayerJoinEvent event = new PlayerJoinEvent(playerIn, itextcomponent.applyTextStyle(TextFormatting.YELLOW));
+		MinecraftForge.EVENT_BUS.post(event);
+		itextcomponent = event.getJoinMessage();
 
 		if(itextcomponent != null) {
 			this.sendMessage(itextcomponent);
 			playerIn.sendMessage(itextcomponent); //Is this necessary? 
 		}
 	}
-	
+
 }

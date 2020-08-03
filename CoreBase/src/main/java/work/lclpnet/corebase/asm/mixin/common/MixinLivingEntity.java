@@ -15,9 +15,9 @@ public abstract class MixinLivingEntity {
 
 	@Shadow
 	public abstract float getHealth();
-	
+
 	private float mixinHealthBefore = -1F;
-	
+
 	@Inject(
 			method = "Lnet/minecraft/entity/LivingEntity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
 			at = @At(
@@ -29,7 +29,7 @@ public abstract class MixinLivingEntity {
 	public void beforeDamageEntity(DamageSource source, float damageAmount, CallbackInfoReturnable<Boolean> cir) {
 		mixinHealthBefore = getHealth();
 	}
-	
+
 	@Inject(
 			method = "Lnet/minecraft/entity/LivingEntity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
 			at = @At(
@@ -43,10 +43,10 @@ public abstract class MixinLivingEntity {
 		float before = mixinHealthBefore;
 		mixinHealthBefore = -1F;
 		if(before != getHealth()) return;
-		
+
 		// No damage taken
 		cir.setReturnValue(false);
 		cir.cancel();
 	}
-	
+
 }

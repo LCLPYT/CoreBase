@@ -22,9 +22,9 @@ public class MixinIceBlock {
 			cancellable = true
 			)
 	protected void turnIntoWater(BlockState state, World world, BlockPos pos, CallbackInfo ci) {
-	       BlockStateToStateEvent event = new BlockStateToStateEvent(world, pos, state, Blocks.WATER.getDefaultState());
-	       MinecraftForge.EVENT_BUS.post(event);
-	       if(event.isCanceled()) ci.cancel();
+		BlockStateToStateEvent event = new BlockStateToStateEvent(world, pos, state, Blocks.WATER.getDefaultState());
+		MinecraftForge.EVENT_BUS.post(event);
+		if(event.isCanceled()) ci.cancel();
 	}
-	
+
 }
