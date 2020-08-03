@@ -1,8 +1,6 @@
 package work.lclpnet.corebase.asm.mixin.common;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -11,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SChangeBlockPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -22,16 +20,12 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import work.lclpnet.corebase.event.custom.PlayerBucketEmptyEvent;
 import work.lclpnet.corebase.event.custom.PlayerBucketFillEvent;
 
 @Mixin(BucketItem.class)
 public class MixinBucketItem {
 
-	@Shadow
-	@Final
-	private Fluid containedBlock;
-
-	// Fluid net.minecraft.block.IBucketPickupHandler.pickupFluid(IWorld worldIn, BlockPos pos, BlockState state)
 	@Inject(
 			method = "Lnet/minecraft/item/BucketItem;onItemRightClick("
 					+ "Lnet/minecraft/world/World;"
@@ -62,6 +56,36 @@ public class MixinBucketItem {
 		}
 
 		cir.setReturnValue(ActionResult.resultFail(itemstack));
+		cir.cancel();
+	}
+
+	// boolean net.minecraft.world.dimension.Dimension.doesWaterVaporize()
+	@Inject(
+			method = "Lnet/minecraft/item/BucketItem;tryPlaceContainedLiquid("
+					+ "Lnet/minecraft/entity/player/PlayerEntity;"
+					+ "Lnet/minecraft/world/World;"
+					+ "Lnet/minecraft/util/math/BlockPos;"
+					+ "Lnet/minecraft/util/math/BlockRayTraceResult;"
+					+ ")Z",
+					at = @At(
+							value = "INVOKE",
+							target = "Lnet/minecraft/world/dimension/Dimension;doesWaterVaporize()Z"
+							),
+					cancellable = true
+			)
+	public void onTryPlaceContainedLiquid(PlayerEntity player, World worldIn, BlockPos posIn, BlockRayTraceResult blockraytraceresult, CallbackInfoReturnable<Boolean> cir) {
+		PlayerBucketEmptyEvent event = new PlayerBucketEmptyEvent(player, player.world, posIn, null, null, null);
+		MinecraftForge.EVENT_BUS.post(event);
+
+		if(!event.isCanceled()) return;
+
+		if(player instanceof ServerPlayerEntity) {
+			ServerPlayerEntity p = (ServerPlayerEntity) player;
+			p.connection.sendPacket(new SChangeBlockPacket(player.world, posIn));
+			p.sendContainerToPlayer(p.openContainer);
+		}
+
+		cir.setReturnValue(false);
 		cir.cancel();
 	}
 
