@@ -18,5 +18,5 @@ public class EventListener {
 			((ServerPlayerEntity) e.getEntity()).sendContainerToPlayer(((ServerPlayerEntity) e.getEntity()).openContainer); //remove this when MC-99075 fixed
 		}
 	}
-
+	
 }
