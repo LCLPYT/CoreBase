@@ -15,7 +15,8 @@
         "common.MixinIceBlock",
         "common.MixinServerWorld",
         "common.MixinSnowBlock",
-        "common.MixinArmorStandEntity"
+        "common.MixinArmorStandEntity",
+        "common.MixinFrostWalkerEnchantment"
     ],
     "client": [
     ],
