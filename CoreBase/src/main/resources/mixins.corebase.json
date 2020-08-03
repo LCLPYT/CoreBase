@@ -12,7 +12,8 @@
         "common.MixinMinecraftServer",
         "common.MixinPlayerList",
         "common.MixinLivingEntity",
-        "common.MixinIceBlock"
+        "common.MixinIceBlock",
+        "common.MixinServerWorld"
     ],
     "client": [
     ],
