@@ -13,7 +13,8 @@
         "common.MixinPlayerList",
         "common.MixinLivingEntity",
         "common.MixinIceBlock",
-        "common.MixinServerWorld"
+        "common.MixinServerWorld",
+        "common.MixinSnowBlock"
     ],
     "client": [
     ],
