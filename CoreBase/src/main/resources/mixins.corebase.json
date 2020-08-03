@@ -10,7 +10,8 @@
         "common.MixinStyle",
         "common.MixinServerPlayNetHandler",
         "common.MixinMinecraftServer",
-        "common.MixinPlayerList"
+        "common.MixinPlayerList",
+        "common.MixinLivingEntity"
     ],
     "client": [
     ],
