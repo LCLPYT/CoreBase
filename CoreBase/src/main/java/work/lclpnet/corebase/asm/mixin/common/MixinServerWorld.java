@@ -20,7 +20,7 @@ public class MixinServerWorld {
 			method = "Lnet/minecraft/world/server/ServerWorld;tickEnvironment(Lnet/minecraft/world/chunk/Chunk;I)V",
 			at = @At(
 					value = "INVOKE",
-					target = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z"
+					target = "Lnet/minecraft/world/server/ServerWorld;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z"
 					)
 			)
 	public boolean onSetBlockState(ServerWorld world, BlockPos pos, BlockState state) {

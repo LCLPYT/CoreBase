@@ -22,7 +22,7 @@ public class MixinSnowBlock {
 			method = "Lnet/minecraft/block/SnowBlock;tick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V",
 			at = @At(
 					value = "INVOKE",
-					target = "spawnDrops(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"
+					target = "Lnet/minecraft/block/SnowBlock;spawnDrops(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"
 					),
 			cancellable = true
 			)

@@ -29,7 +29,6 @@ public class MixinArmorStandEntity {
 							target = "Lnet/minecraft/entity/player/PlayerAbilities;isCreativeMode:Z",
 							opcode = Opcodes.GETFIELD
 							), 
-					remap = false,
 					cancellable = true
 			)
 	public void onArmorStandManipulate(PlayerEntity player, EquipmentSlotType slot, ItemStack is, Hand hand, CallbackInfoReturnable<Boolean> cir) {
