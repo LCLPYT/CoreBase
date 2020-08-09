@@ -7,7 +7,6 @@
     "refmap": "corebase.refmap.json",
     "mixins": [
         "common.MixinTextComponent",
-        "common.MixinStyle",
         "common.MixinServerPlayNetHandler",
         "common.MixinMinecraftServer",
         "common.MixinPlayerList",

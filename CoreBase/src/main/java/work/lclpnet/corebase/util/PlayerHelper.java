@@ -65,10 +65,7 @@ public class PlayerHelper {
 		String url = "https://sessionserver.mojang.com/session/minecraft/profile/" + UUIDHelper.removeDashes(uuid);
 		try {
 			String jsonText = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
-			System.out.println(jsonText);
 			if(jsonText == null || jsonText.isEmpty()) return null;
-
-			System.out.println(jsonText);
 
 			JsonObject json = new Gson().fromJson(jsonText, JsonObject.class);
 			return json;
