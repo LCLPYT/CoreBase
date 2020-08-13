@@ -7,6 +7,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class ColorHelper {
 
+	public static final char COLOR_CHAR = '\u00a7';
+	
 	public static List<TextFormatting> getChatColorColors() {
 		List<TextFormatting> colors = new ArrayList<>();
 		colors.add(TextFormatting.AQUA);
