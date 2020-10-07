@@ -59,7 +59,6 @@ public class MixinBucketItem {
 		cir.cancel();
 	}
 
-	// boolean net.minecraft.world.dimension.Dimension.doesWaterVaporize()
 	@Inject(
 			method = "Lnet/minecraft/item/BucketItem;tryPlaceContainedLiquid("
 					+ "Lnet/minecraft/entity/player/PlayerEntity;"
@@ -69,9 +68,10 @@ public class MixinBucketItem {
 					+ ")Z",
 					at = @At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/world/dimension/Dimension;doesWaterVaporize()Z"
+							target = "Lnet/minecraft/world/DimensionType;func_236040_e_()Z"
 							),
-					cancellable = true
+					cancellable = true,
+					remap = false
 			)
 	public void onTryPlaceContainedLiquid(PlayerEntity player, World worldIn, BlockPos posIn, BlockRayTraceResult blockraytraceresult, CallbackInfoReturnable<Boolean> cir) {
 		PlayerBucketEmptyEvent event = new PlayerBucketEmptyEvent(player, player.world, posIn, null, null, null);

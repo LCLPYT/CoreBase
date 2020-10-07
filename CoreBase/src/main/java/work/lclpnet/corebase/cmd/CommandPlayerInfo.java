@@ -12,9 +12,9 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.EntitySelector;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -22,6 +22,7 @@ import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.ObjectHelper;
+import work.lclpnet.corebase.util.TextComponentHelper;
 
 public class CommandPlayerInfo extends CommandBase{
 
@@ -77,31 +78,39 @@ public class CommandPlayerInfo extends CommandBase{
 		msg(source, "TOTAL-EXP", target.experienceTotal);
 		msg(source, "WALKSPEED", target.abilities.getWalkSpeed());
 		msg(source, "FLYSPEED", target.abilities.getFlySpeed());
-		msg(source, "DIMENSION", target.world.getDimension().getType().getRegistryName().toString());
+		msg(source, "DIMENSION", target.world.func_234923_W_());
 		msg(source, "INVULNERABLE", target.abilities.disableDamage);
 
-		msg(source, "ATTRIBUTES", null);
-		attr(source, "ATTACK-SPEED", target, SharedMonsterAttributes.ATTACK_SPEED);
-		attr(source, "ARMOR", target, SharedMonsterAttributes.ARMOR);
-		attr(source, "ARMOR-TOUGHNESS", target, SharedMonsterAttributes.ARMOR_TOUGHNESS);
-		attr(source, "ATTACK-DAMAGE", target, SharedMonsterAttributes.ATTACK_DAMAGE);
-		attr(source, "KNOCKBACK-RESISTANCE", target, SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
-		attr(source, "LUCK", target, SharedMonsterAttributes.LUCK);
-		attr(source, "MAX-HEALTH", target, SharedMonsterAttributes.MAX_HEALTH);
-		attr(source, "MOVEMENT-SPEED", target, SharedMonsterAttributes.MOVEMENT_SPEED);
-		attr(source, "FLYING-SPEED", target, SharedMonsterAttributes.FLYING_SPEED);
+		msg(source, "ATTRIBUTES", null); // TODO get from attributes modifier map of entity
+		attr(source, "ATTACK-SPEED", target, Attributes.field_233825_h_);
+		attr(source, "ARMOR", target, Attributes.field_233826_i_);
+		attr(source, "ARMOR-TOUGHNESS", target, Attributes.field_233827_j_);
+		attr(source, "ATTACK-DAMAGE", target, Attributes.field_233823_f_);
+		attr(source, "KNOCKBACK-RESISTANCE", target, Attributes.field_233820_c_);
+		attr(source, "LUCK", target, Attributes.field_233828_k_);
+		attr(source, "MAX-HEALTH", target, Attributes.field_233818_a_);
+		attr(source, "MOVEMENT-SPEED", target, Attributes.field_233821_d_);
+		attr(source, "FLYING-SPEED", target, Attributes.field_233822_e_);
 	}
 
-	private void attr(CommandSource source, String category, ServerPlayerEntity target, IAttribute attr) {
-		IAttributeInstance attribute = target.getAttribute(attr);
+	private void attr(CommandSource source, String category, ServerPlayerEntity target, Attribute attr) {
+		ModifiableAttributeInstance attribute = target.getAttribute(attr);
 		if(attribute != null) msg(source, category, attribute.getValue());
 	}
 
 	private void msg(CommandSource source, String category, @Nullable Object value) {
-		if(value == null) source.sendFeedback(new StringTextComponent(category).applyTextStyle(TextFormatting.BLUE), false);
+		if(value == null) source.sendFeedback(TextComponentHelper.applyTextStyle(new StringTextComponent(category), TextFormatting.BLUE), false);
 		else {
-			ITextComponent sibling = new StringTextComponent(value.toString()).applyTextStyle(TextFormatting.GREEN);
-			source.sendFeedback(new StringTextComponent(category).applyTextStyle(TextFormatting.DARK_PURPLE).appendText(": ").appendSibling(sibling), false);
+			ITextComponent sibling = TextComponentHelper.applyTextStyle(new StringTextComponent(value.toString()), TextFormatting.GREEN);
+			ITextComponent feedback = TextComponentHelper.appendSibling(
+					TextComponentHelper.appendText(
+							TextComponentHelper.applyTextStyle(
+									new StringTextComponent(category), 
+									TextFormatting.DARK_PURPLE),
+							": "), 
+					sibling);
+			
+			source.sendFeedback(feedback, false);
 		}
 	}
 

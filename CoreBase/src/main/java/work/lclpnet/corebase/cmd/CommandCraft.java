@@ -12,6 +12,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import work.lclpnet.corebase.cmd.CommandBase;
 import work.lclpnet.corebase.cmd.CoreCommands;
@@ -39,7 +40,7 @@ public class CommandCraft extends CommandBase{
 
 	private static void openFor(ServerPlayerEntity p) {
 		INamedContainerProvider incp = new SimpleNamedContainerProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
-			return new WorkbenchContainerOverride(p_226928_1_, p_226928_2_, IWorldPosCallable.of(p.world, p.getPosition()));
+			return new WorkbenchContainerOverride(p_226928_1_, p_226928_2_, IWorldPosCallable.of(p.world, new BlockPos(p.getPositionVec())));
 		}, new TranslationTextComponent("container.crafting"));
 		
 		p.openContainer(incp);

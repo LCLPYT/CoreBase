@@ -3,14 +3,13 @@ package work.lclpnet.corebase.asm.mixin.common;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponent;
-import net.minecraft.util.text.TextFormatting;
 
+@Deprecated
 @Mixin(TextComponent.class)
 public abstract class MixinTextComponent implements ITextComponent{
 
-	@Override
+	/*@Override
 	public ITextComponent applyTextStyle(TextFormatting color) {
 		ITextComponent applied = ITextComponent.super.applyTextStyle(color);
 		Style style = applied.getStyle();
@@ -27,6 +26,6 @@ public abstract class MixinTextComponent implements ITextComponent{
 		applied.setStyle(style);
 		
 		return applied;
-	}
+	}*/
 
 }

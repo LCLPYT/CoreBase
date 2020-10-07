@@ -8,6 +8,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.PlayerHelper;
@@ -45,7 +46,7 @@ public class CommandSpeed extends CommandBase{
 	}
 
 	private void sendUpdate(float f, String type, ServerPlayerEntity p) {
-		p.sendMessage(CoreBase.TEXT.complexMessage("Set your %s speed to %s.", TextFormatting.GREEN, new Substitute(type), new Substitute(f, TextFormatting.YELLOW)));
+		p.sendMessage(CoreBase.TEXT.complexMessage("Set your %s speed to %s.", TextFormatting.GREEN, new Substitute(type), new Substitute(f, TextFormatting.YELLOW)), Util.field_240973_b_);
 	}
 	
 	public int reset(CommandContext<CommandSource> ctx) throws CommandSyntaxException {

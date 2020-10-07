@@ -11,6 +11,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
@@ -60,7 +61,7 @@ public class CommandFeed extends CommandBase{
 	
 	private void feed(ServerPlayerEntity p) {
 		p.getFoodStats().setFoodLevel(20);
-		p.sendMessage(CoreBase.TEXT.message("You have been feeded.", MessageType.SUCCESS));
+		p.sendMessage(CoreBase.TEXT.message("You have been feeded.", MessageType.SUCCESS), Util.field_240973_b_);
 	}
 	
 }

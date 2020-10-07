@@ -1,5 +1,7 @@
 package work.lclpnet.corebase.asm.mixin.common;
 
+import java.util.UUID;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,11 +18,15 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.server.management.PlayerProfileCache;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import work.lclpnet.corebase.event.custom.PlayerJoinEvent;
+import work.lclpnet.corebase.util.TextComponentHelper;
 
 @Mixin(PlayerList.class)
 public class MixinPlayerList {
@@ -30,19 +36,38 @@ public class MixinPlayerList {
 	private MinecraftServer server;
 
 	@Shadow
-	public void sendMessage(ITextComponent component) {}
+	public void func_232641_a_(ITextComponent msg, ChatType type, UUID senderUuid) {}
+
+	// void net.minecraft.server.management.PlayerList.func_232641_a_(ITextComponent p_232641_1_, ChatType p_232641_2_, UUID p_232641_3_)
 
 	@Redirect(
 			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerList;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V")
+			at = @At(
+					value = "INVOKE", 
+					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_("
+							+ "Lnet/minecraft/util/text/ITextComponent;"
+							+ "Lnet/minecraft/util/text/ChatType;"
+							+ "Ljava/util/UUID;"
+							+ ")V",
+							remap = false
+					)
 			)
-	public void onSendMessage(PlayerList list, ITextComponent itextcomponent) {
+	public void onSendMessage(PlayerList list, ITextComponent itextcomponent, ChatType type, UUID senderUuid) {
 		// do nothing
 	}
 
 	@Inject(
 			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerList;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V", shift = Shift.AFTER)
+			at = @At(
+					value = "INVOKE", 
+					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_("
+							+ "Lnet/minecraft/util/text/ITextComponent;"
+							+ "Lnet/minecraft/util/text/ChatType;"
+							+ "Ljava/util/UUID;"
+							+ ")V",
+							remap = false,
+							shift = Shift.AFTER
+					)
 			)
 	public void afterSendMessage(NetworkManager netManager, ServerPlayerEntity playerIn, CallbackInfo ci) {
 		GameProfile gameprofile = playerIn.getGameProfile();
@@ -50,20 +75,20 @@ public class MixinPlayerList {
 		GameProfile gameprofile1 = playerprofilecache.getProfileByUUID(gameprofile.getId());
 		String s = gameprofile1 == null ? gameprofile.getName() : gameprofile1.getName();
 
-		ITextComponent itextcomponent;
+		IFormattableTextComponent itextcomponent;
 		if (playerIn.getGameProfile().getName().equalsIgnoreCase(s)) {
 			itextcomponent = new TranslationTextComponent("multiplayer.player.joined", playerIn.getDisplayName());
 		} else {
 			itextcomponent = new TranslationTextComponent("multiplayer.player.joined.renamed", playerIn.getDisplayName(), s);
 		}
 
-		PlayerJoinEvent event = new PlayerJoinEvent(playerIn, itextcomponent.applyTextStyle(TextFormatting.YELLOW));
+		PlayerJoinEvent event = new PlayerJoinEvent(playerIn, TextComponentHelper.applyTextStyle(itextcomponent, TextFormatting.YELLOW));
 		MinecraftForge.EVENT_BUS.post(event);
-		itextcomponent = event.getJoinMessage();
 
-		if(itextcomponent != null) {
-			this.sendMessage(itextcomponent);
-			playerIn.sendMessage(itextcomponent); //Is this necessary? 
+		ITextComponent itc = event.getJoinMessage();
+		if(itc != null) {
+			this.func_232641_a_(itc, ChatType.SYSTEM, Util.field_240973_b_);
+			playerIn.sendMessage(itc, Util.field_240973_b_); //Is this necessary? 
 		}
 	}
 

@@ -6,7 +6,6 @@
     "package": "work.lclpnet.corebase.asm.mixin",
     "refmap": "corebase.refmap.json",
     "mixins": [
-        "common.MixinTextComponent",
         "common.MixinServerPlayNetHandler",
         "common.MixinMinecraftServer",
         "common.MixinPlayerList",

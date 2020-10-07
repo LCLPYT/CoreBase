@@ -3,6 +3,7 @@ loaderVersion="[31,)"
 issueTrackerURL="https://github.com/LCLPYT/CoreBase/issues"
 displayURL="https://github.com/LCLPYT/CoreBase"
 authors="LCLP"
+license="MIT"
 
 [[mods]]
     modId="corebase"
@@ -18,13 +19,13 @@ authors="LCLP"
     [[dependencies.corebase]]
         modId="forge"
         mandatory=true
-        versionRange="[31,)"
+        versionRange="[34,)"
         ordering="NONE"
         side="BOTH"
     [[dependencies.corebase]]
         modId="minecraft"
         mandatory=true
-        versionRange="[1.15.2]"
+        versionRange="[1.16.3]"
         ordering="NONE"
         side="BOTH"
 

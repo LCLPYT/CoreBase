@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.util.text.Color;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import work.lclpnet.corebase.util.ComponentSupplier.TextFormat;
@@ -36,11 +39,11 @@ public class ComponentHelper {
 	}
 
 	public static ITextComponent message(String prefix, String msg, MessageType type) {
-		return getPrefix(prefix).appendSibling(type.apply(new StringTextComponent(msg)));
+		return TextComponentHelper.appendSibling(getPrefix(prefix), type.apply(new StringTextComponent(msg)));
 	}
 
-	public static ITextComponent getPrefix(String prefix) {
-		return new StringTextComponent(prefix + "> ").applyTextStyle(TextFormatting.BLUE);
+	public static IFormattableTextComponent getPrefix(String prefix) {
+		return TextComponentHelper.applyTextStyle(new StringTextComponent(prefix + "> "), TextFormatting.BLUE);
 	}
 
 	public static ITextComponent complexMessage(String prefix, String msg, TextFormatting tf, Substitute... substitutes) {
@@ -62,9 +65,11 @@ public class ComponentHelper {
 		for(String s : split) {
 			components.add(tf.apply(new StringTextComponent(s)));
 			if(i < matches.size() && i < substitutes.length) {
-				if(substitutes[i].getObj() instanceof ITextComponent) {
-					ITextComponent itc = (ITextComponent) substitutes[i].getObj();
-					if(itc.getUnformattedComponentText().equals(itc.getFormattedText())) itc.applyTextStyles(substitutes[i].getFormat());
+				if(substitutes[i].getObj() instanceof IFormattableTextComponent) {
+					IFormattableTextComponent itc = (IFormattableTextComponent) substitutes[i].getObj();
+					//if(itc.getUnformattedComponentText().equals(itc.getFormattedText()))
+					if(!TextComponentHelper.hasDeepFormatting(itc))
+						TextComponentHelper.applyTextStyles(itc, substitutes[i].getFormat());
 					components.add(itc);
 				} else {
 					String formatted = String.format(matches.get(i), substitutes[i].getObj());
@@ -75,8 +80,8 @@ public class ComponentHelper {
 			i++;
 		}
 
-		ITextComponent comp = getPrefix(prefix);
-		components.forEach(comp::appendSibling);
+		IFormattableTextComponent comp = getPrefix(prefix);
+		components.forEach(c -> TextComponentHelper.appendSibling(comp, c));
 		return comp;
 	}
 
@@ -120,19 +125,27 @@ public class ComponentHelper {
 			if(root == null) {
 				root = new StringTextComponent(tp);
 				for(TextFormatting formatting : formattings) {
-					root.applyTextStyle(formatting);
-					if(formatting == TextFormatting.RESET) root.getStyle().setColor(defaultColor);
+					TextComponentHelper.applyTextStyle(root, formatting);
+					if(formatting == TextFormatting.RESET) {
+						Style style = root.getStyle();
+						style.func_240718_a_(Color.func_240744_a_(defaultColor));
+						root.func_230530_a_(style);
+					}
 				}
 				formattings.clear();
 			}
 			else {
 				StringTextComponent stc = new StringTextComponent(tp);
 				for(TextFormatting formatting : formattings) {
-					stc.applyTextStyle(formatting);
-					if(formatting == TextFormatting.RESET) stc.getStyle().setColor(defaultColor);
+					TextComponentHelper.applyTextStyle(stc, formatting);
+					if(formatting == TextFormatting.RESET) {
+						Style style = root.getStyle();
+						style.func_240718_a_(Color.func_240744_a_(defaultColor));
+						root.func_230530_a_(style);
+					}
 				}
 				formattings.clear();
-				root.appendSibling(stc);
+				TextComponentHelper.appendSibling(root, stc);
 			}
 		}
 

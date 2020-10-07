@@ -6,6 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.ComponentHelper;
@@ -29,7 +31,7 @@ public class CommandRawSay extends CommandBase {
 		ITextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(msg, '&');
 		if(itc == null) return 1;
 		
-		CoreBase.getServer().getPlayerList().sendMessage(itc);
+		CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.field_240973_b_);
 		return 0;
 	}
 

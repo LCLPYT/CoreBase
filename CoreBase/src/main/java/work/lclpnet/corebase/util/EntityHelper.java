@@ -26,7 +26,7 @@ public class EntityHelper {
 			worldIn.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, chunkpos, 1, entityIn.getEntityId());
 			entityIn.stopRiding();
 			if (((ServerPlayerEntity) entityIn).isSleeping()) {
-				((ServerPlayerEntity)entityIn).wakeUp();
+				((ServerPlayerEntity)entityIn).stopSleepInBed(true, true);
 			}
 
 			if (worldIn == entityIn.world) {
@@ -45,7 +45,6 @@ public class EntityHelper {
 				entityIn.setRotationYawHead(f1);
 			} else {
 				entityIn.detach();
-				entityIn.dimension = worldIn.dimension.getType();
 				Entity entity = entityIn;
 				entityIn = entityIn.getType().create(worldIn);
 				if (entityIn == null) {
@@ -61,7 +60,7 @@ public class EntityHelper {
 
 		if (!(entityIn instanceof LivingEntity) || !((LivingEntity)entityIn).isElytraFlying()) {
 			entityIn.setMotion(entityIn.getMotion().mul(1.0D, 0.0D, 1.0D));
-			entityIn.onGround = true;
+			entityIn.func_230245_c_(true);
 		}
 	}
 

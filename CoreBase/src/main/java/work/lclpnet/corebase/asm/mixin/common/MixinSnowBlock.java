@@ -19,7 +19,7 @@ import work.lclpnet.corebase.event.custom.BlockStateToStateEvent;
 public class MixinSnowBlock {
 
 	@Inject(
-			method = "Lnet/minecraft/block/SnowBlock;tick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V",
+			method = "Lnet/minecraft/block/SnowBlock;randomTick(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/util/math/BlockPos;Ljava/util/Random;)V",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/block/SnowBlock;spawnDrops(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"

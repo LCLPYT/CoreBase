@@ -1,14 +1,14 @@
 package work.lclpnet.corebase.util;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class BlockLocation extends BlockPos{
 
 	private final World world;
 	
-	public BlockLocation(World worldIn, Vec3d vecIn) {
+	public BlockLocation(World worldIn, Vector3d vecIn) {
 		super(vecIn);
 		this.world = worldIn;
 	}

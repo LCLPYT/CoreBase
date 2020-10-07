@@ -2,31 +2,32 @@ package work.lclpnet.corebase.util;
 
 import java.util.function.Function;
 
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class MessageType {
 
-	public static final MessageType INFO = new MessageType(c -> c.applyTextStyle(TextFormatting.GRAY)),
-			ERROR = new MessageType(c -> c.applyTextStyle(TextFormatting.RED)),
-			SUCCESS = new MessageType(c -> c.applyTextStyle(TextFormatting.GREEN)),
-			OTHER = new MessageType(c -> c.applyTextStyle(TextFormatting.AQUA));
+	public static final MessageType INFO = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.GRAY)),
+			ERROR = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.RED)),
+			SUCCESS = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.GREEN)),
+			OTHER = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.AQUA));
 	
-	private Function<ITextComponent, ITextComponent> apply;
+	private Function<IFormattableTextComponent, ITextComponent> apply;
 	
-	public MessageType(Function<ITextComponent, ITextComponent> apply) {
+	public MessageType(Function<IFormattableTextComponent, ITextComponent> apply) {
 		this.apply = apply;
 	}
 	
-	public Function<ITextComponent, ITextComponent> getApply() {
+	public Function<IFormattableTextComponent, ITextComponent> getApply() {
 		return apply;
 	}
 	
-	public void setApply(Function<ITextComponent, ITextComponent> apply) {
+	public void setApply(Function<IFormattableTextComponent, ITextComponent> apply) {
 		this.apply = apply;
 	}
 	
-	public ITextComponent apply(ITextComponent component) {
+	public ITextComponent apply(IFormattableTextComponent component) {
 		return apply.apply(component);
 	}
 	

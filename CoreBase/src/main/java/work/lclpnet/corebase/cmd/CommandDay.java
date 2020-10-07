@@ -4,17 +4,19 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.DimensionArgument;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.Substitute;
@@ -42,33 +44,37 @@ public class CommandDay extends CommandBase{
 		
 		Entity en = ctx.getSource().getEntity();
 
-		setTime(en.world, en);
+		setTime((ServerWorld) en.world, en);
 		
 		return 0;
 	}
 
 	private static int dayWorld(CommandContext<CommandSource> ctx) {
-		DimensionType dim = DimensionArgument.getDimensionArgument(ctx, "world");
+		ServerWorld dim;
+		try {
+			dim = DimensionArgument.getDimensionArgument(ctx, "world");
+		} catch (CommandSyntaxException e) {
+			e.printStackTrace();
+			dim = null;
+		}
 		if(dim == null) return 1;
 		
-		World w = CoreBase.getServer().getWorld(dim);
-		if(w == null) return 1;
+		setTime(dim, ctx.getSource().getEntity());
 		
-		setTime(w, null);
-		
-		ctx.getSource().sendFeedback(CoreBase.TEXT.message("Set the time in world " + w.getWorldInfo().getWorldName() + " to day.", MessageType.SUCCESS), false);
+		ResourceLocation dimId = dim.func_234923_W_().func_240901_a_();
+		ctx.getSource().sendFeedback(CoreBase.TEXT.message("Set the time in world " + dimId + " to day.", MessageType.SUCCESS), false);
 		return 0;
 	}
 	
-	private static void setTime(World world, @Nullable Entity en) {
-		world.setDayTime(6000L);
+	private static void setTime(ServerWorld world, @Nullable Entity en) {
+		world.func_241114_a_(6000L);
 		
 		final ITextComponent msg = CoreBase.TEXT.complexMessage("%s has set the time to day.", TextFormatting.GREEN, 
 				new Substitute(en != null ? en.getDisplayName().getString() : "Console", TextFormatting.YELLOW));
 		
 		world.getPlayers().forEach(p -> {
 			p.playSound(SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 1F, 0F);
-			p.sendMessage(msg);
+			p.sendMessage(msg, Util.field_240973_b_);
 		});
 	}
 

@@ -5,11 +5,12 @@ import java.util.function.Predicate;
 import com.mojang.brigadier.CommandDispatcher;
 
 import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands.EnvironmentType;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class CoreCommands {
 
-	public static void registerCommands(CommandDispatcher<CommandSource> dispatcher, boolean dedicatedServer) {
+	public static void registerCommands(CommandDispatcher<CommandSource> dispatcher, EnvironmentType environmentType) {
 		new CommandChatClear().register(dispatcher);
 		new CommandChest().register(dispatcher);
 		new CommandInventory().register(dispatcher);
@@ -26,7 +27,7 @@ public class CoreCommands {
 		new CommandWorldSpawnTp().register(dispatcher);
 		new CommandFly().register(dispatcher);
 		
-		if(dedicatedServer) {
+		if(environmentType != EnvironmentType.INTEGRATED) {
 			new CommandCrash().register(dispatcher);
 			new CommandPing().register(dispatcher);
 			new CommandSudo().register(dispatcher);

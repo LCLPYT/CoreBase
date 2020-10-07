@@ -44,7 +44,7 @@ public class ComponentSupplier {
 		}
 		
 		public ITextComponent apply(StringTextComponent component) {
-			return component.applyTextStyles(format);
+			return TextComponentHelper.applyTextStyles(component, format);
 		}
 
 		public TextFormatting[] getFormat() {

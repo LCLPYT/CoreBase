@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -44,7 +44,11 @@ public class CoreBase {
 	public void onServerStarting(FMLServerStartingEvent e) {
 		LOGGER.info("CoreBase starting...");
 		server = e.getServer();
-		CoreCommands.registerCommands(e.getCommandDispatcher(), server instanceof DedicatedServer);
+	}
+	
+	@SubscribeEvent
+	public void onRegisterCommands(RegisterCommandsEvent e) {
+		CoreCommands.registerCommands(e.getDispatcher(), e.getEnvironment());
 	}
 
 	@SubscribeEvent

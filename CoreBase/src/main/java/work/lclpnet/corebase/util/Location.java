@@ -1,10 +1,10 @@
 package work.lclpnet.corebase.util;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class Location extends Vec3d{
+public class Location extends Vector3d{
 
 	public final World world;
 	
@@ -12,7 +12,7 @@ public class Location extends Vec3d{
 		this(other.world, other);
 	}
 	
-	public Location(World worldIn, Vec3d vecIn) {
+	public Location(World worldIn, Vector3d vecIn) {
 		super(vecIn.x, vecIn.y, vecIn.z);
 		this.world = worldIn;
 	}

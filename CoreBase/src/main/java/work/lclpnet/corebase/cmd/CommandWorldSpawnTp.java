@@ -14,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.ISpawnWorldInfo;
+import net.minecraft.world.storage.IWorldInfo;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.EntityHelper;
 import work.lclpnet.corebase.util.MessageType;
@@ -61,8 +63,14 @@ public class CommandWorldSpawnTp extends CommandBase{
 	private void tp(Entity entity) {
 		if(!(entity.world instanceof ServerWorld)) return;
 		
-		BlockPos spawn = entity.world.getSpawnPoint();
-		EntityHelper.teleport(entity, (ServerWorld) entity.world, spawn.getX() + 0.5D, (double) spawn.getY(), spawn.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
+		ServerWorld sw = (ServerWorld) entity.world;
+		IWorldInfo wi = sw.getWorldInfo();
+		if(!(wi instanceof ISpawnWorldInfo)) return;
+		
+		ISpawnWorldInfo spawnInfo = (ISpawnWorldInfo) wi;
+		BlockPos spawn = new BlockPos(spawnInfo.getSpawnX(), spawnInfo.getSpawnY(), spawnInfo.getSpawnZ());
+		
+		EntityHelper.teleport(entity, sw, spawn.getX() + 0.5D, (double) spawn.getY(), spawn.getZ() + 0.5D, entity.rotationYaw, entity.rotationPitch);
 	}
 
 
