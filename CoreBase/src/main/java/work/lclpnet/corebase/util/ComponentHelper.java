@@ -37,7 +37,7 @@ public class ComponentHelper {
 		}
 	}
 
-	public static ITextComponent message(String prefix, String msg, MessageType type) {
+	public static IFormattableTextComponent message(String prefix, String msg, MessageType type) {
 		return TextComponentHelper.appendSibling(getPrefix(prefix), type.apply(new StringTextComponent(msg)));
 	}
 
@@ -45,11 +45,11 @@ public class ComponentHelper {
 		return TextComponentHelper.applyTextStyle(new StringTextComponent(prefix + "> "), TextFormatting.BLUE);
 	}
 
-	public static ITextComponent complexMessage(String prefix, String msg, TextFormatting tf, Substitute... substitutes) {
+	public static IFormattableTextComponent complexMessage(String prefix, String msg, TextFormatting tf, Substitute... substitutes) {
 		return complexMessage(prefix, msg, new TextFormat(tf), substitutes);
 	}
 
-	public static ITextComponent complexMessage(String prefix, String msg, TextFormat tf, Substitute... substitutes) {
+	public static IFormattableTextComponent complexMessage(String prefix, String msg, TextFormat tf, Substitute... substitutes) {
 		if(FORMATTER_PATTERN == null) return null;
 
 		List<String> matches = new ArrayList<>(); 

@@ -1,5 +1,6 @@
 package work.lclpnet.corebase.util;
 
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -16,7 +17,7 @@ public class ComponentSupplier {
 		this.prefix = prefix;
 	}
 	
-	public ITextComponent getPrefix() {
+	public IFormattableTextComponent getPrefix() {
 		return prefix != null ? ComponentHelper.getPrefix(prefix) : new StringTextComponent("");
 	}
 	
@@ -24,15 +25,15 @@ public class ComponentSupplier {
 		this.prefix = prefix;
 	}
 	
-	public ITextComponent message(String msg, MessageType type) {
+	public IFormattableTextComponent message(String msg, MessageType type) {
 		return ComponentHelper.message(prefix, msg, type);
 	}
 	
-	public ITextComponent complexMessage(String msg, TextFormatting tf, Substitute... substitutes) {
+	public IFormattableTextComponent complexMessage(String msg, TextFormatting tf, Substitute... substitutes) {
 		return ComponentHelper.complexMessage(prefix, msg, tf, substitutes);
 	}
 	
-	public ITextComponent complexMessage(String msg, TextFormat tf, Substitute... substitutes) {
+	public IFormattableTextComponent complexMessage(String msg, TextFormat tf, Substitute... substitutes) {
 		return ComponentHelper.complexMessage(prefix, msg, tf, substitutes);
 	}
 	
