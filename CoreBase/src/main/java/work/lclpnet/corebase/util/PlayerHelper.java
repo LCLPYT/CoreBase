@@ -19,6 +19,8 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.management.PlayerList;
@@ -205,8 +207,10 @@ public class PlayerHelper {
 
 	public static void setWalkSpeed(ServerPlayerEntity p, float value) {
 		setSpeed(p, value, "walkSpeed");
+		ModifiableAttributeInstance instance = p.getAttribute(Attributes.field_233821_d_);
+		instance.setBaseValue(value);
 	}
-
+	
 	private static void setSpeed(ServerPlayerEntity p, float value, String field) {
 		ObjectHelper.set(p.abilities, field, value);
 		p.sendPlayerAbilities();
