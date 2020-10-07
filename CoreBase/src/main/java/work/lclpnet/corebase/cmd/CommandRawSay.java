@@ -29,6 +29,7 @@ public class CommandRawSay extends CommandBase {
 	public int rawSay(CommandContext<CommandSource> ctx) {
 		String msg = ctx.getArgument("message", String.class);
 		ITextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(msg, '&');
+		System.out.println(itc);
 		if(itc == null) return 1;
 		
 		CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.field_240973_b_);

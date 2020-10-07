@@ -1,5 +1,6 @@
 package work.lclpnet.corebase.util;
 
+import net.minecraft.util.text.Color;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -7,6 +8,13 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TextComponentHelper {
 
+	public static final Style resetStyleNoColor = Style.field_240709_b_
+			.func_240713_a_(false) // bold
+			.func_240722_b_(false) // italic
+			.setUnderlined(false) // underlined
+			.setStrikethrough(false) // strikethrough
+			.setObfuscated(false); // obfuscated
+	
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_240702_b_(String)}
 	 */
@@ -33,6 +41,17 @@ public class TextComponentHelper {
 	 */
 	public static IFormattableTextComponent appendSibling(IFormattableTextComponent component, ITextComponent sibling) {
 		return component.func_230529_a_(sibling);
+	}
+	
+	/**
+	 * Method redirect to {@link IFormattableTextComponent#func_230530_a_(Style)}
+	 */
+	public static IFormattableTextComponent setStyle(IFormattableTextComponent component, Style style) {
+		return component.func_230530_a_(style);
+	}
+	
+	public static IFormattableTextComponent setStyleColor(IFormattableTextComponent component, Color c) {
+		return setStyle(component, component.getStyle().func_240718_a_(c));
 	}
 	
 	public static boolean hasFormatting(ITextComponent component) {

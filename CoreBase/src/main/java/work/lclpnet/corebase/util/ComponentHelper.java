@@ -11,7 +11,6 @@ import net.minecraft.util.text.Color;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import work.lclpnet.corebase.util.ComponentSupplier.TextFormat;
@@ -98,7 +97,7 @@ public class ComponentHelper {
 	}
 
 	public static ITextComponent convertCharStyleToComponentStyle(String text, char colorChar, TextFormatting defaultColor) {
-		String regex = "(?i)" + CharacterHelper.getJavaUnicodeCode(colorChar) + "[0-9A-FK-OR]";
+		String regex = "(?i)" + CharacterHelper.getJavaUnicodeCode(colorChar) + "[0-9A-FK-OR]|" + CharacterHelper.getJavaUnicodeCode(colorChar) + "#[0-9A-F]{6}";
 		String[] textParts = text.split(regex);
 
 		List<String> styles = new ArrayList<>();
@@ -108,7 +107,7 @@ public class ComponentHelper {
 			styles.add(m.group());
 
 		StringTextComponent root = null;
-		List<TextFormatting> formattings = null;
+		List<Object> formattings = null;
 		for (int i = 0; i < textParts.length; i++) {
 			String tp = textParts[i];
 
@@ -116,32 +115,40 @@ public class ComponentHelper {
 			else {
 				String controlString = styles.get(i - 1);
 				char formatCode = controlString.charAt(1);
-				TextFormatting format = getFormattingByFormattingChar(formatCode);
-				if(format != null) formattings.add(format);
+				if(formatCode == '#') {
+					Color c = Color.func_240745_a_(controlString.substring(1));
+					if(c != null) formattings.add(c);
+				} else {
+					TextFormatting format = getFormattingByFormattingChar(formatCode);
+					if(format != null) formattings.add(format);
+				}
 			}
 
 			if(tp.isEmpty()) continue;
 
 			if(root == null) {
 				root = new StringTextComponent(tp);
-				for(TextFormatting formatting : formattings) {
-					TextComponentHelper.applyTextStyle(root, formatting);
-					if(formatting == TextFormatting.RESET) {
-						Style style = root.getStyle();
-						style.func_240718_a_(Color.func_240744_a_(defaultColor));
-						root.func_230530_a_(style);
+				for(Object o : formattings) {
+					if(o instanceof TextFormatting) {
+						TextFormatting formatting = (TextFormatting) o;
+						TextComponentHelper.applyTextStyle(root, formatting);
+						if(formatting == TextFormatting.RESET) 
+							TextComponentHelper.setStyle(root, TextComponentHelper.resetStyleNoColor.func_240718_a_(Color.func_240744_a_(defaultColor)));
+					} else if(o instanceof Color) {
+						TextComponentHelper.setStyleColor(root, (Color) o);
 					}
 				}
 				formattings.clear();
-			}
-			else {
+			} else {
 				StringTextComponent stc = new StringTextComponent(tp);
-				for(TextFormatting formatting : formattings) {
-					TextComponentHelper.applyTextStyle(stc, formatting);
-					if(formatting == TextFormatting.RESET) {
-						Style style = root.getStyle();
-						style.func_240718_a_(Color.func_240744_a_(defaultColor));
-						root.func_230530_a_(style);
+				for(Object o : formattings) {
+					if(o instanceof TextFormatting) {
+						TextFormatting formatting = (TextFormatting) o;
+						TextComponentHelper.applyTextStyle(stc, formatting);
+						if(formatting == TextFormatting.RESET) 
+							TextComponentHelper.setStyle(stc, TextComponentHelper.resetStyleNoColor.func_240718_a_(Color.func_240744_a_(defaultColor)));
+					} else if(o instanceof Color) {
+						TextComponentHelper.setStyleColor(stc, (Color) o);
 					}
 				}
 				formattings.clear();
