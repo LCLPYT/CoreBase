@@ -84,19 +84,19 @@ public class ComponentHelper {
 		return comp;
 	}
 
-	public static ITextComponent convertCharStyleToComponentStyle(ITextComponent itc) {
+	public static IFormattableTextComponent convertCharStyleToComponentStyle(ITextComponent itc) {
 		return convertCharStyleToComponentStyle(itc.getUnformattedComponentText());
 	}
 
-	public static ITextComponent convertCharStyleToComponentStyle(String text) {
+	public static IFormattableTextComponent convertCharStyleToComponentStyle(String text) {
 		return convertCharStyleToComponentStyle(text, COLOR_CHAR);
 	}
 
-	public static ITextComponent convertCharStyleToComponentStyle(String text, char colorChar) {
+	public static IFormattableTextComponent convertCharStyleToComponentStyle(String text, char colorChar) {
 		return convertCharStyleToComponentStyle(text, colorChar, TextFormatting.WHITE);
 	}
 
-	public static ITextComponent convertCharStyleToComponentStyle(String text, char colorChar, TextFormatting defaultColor) {
+	public static IFormattableTextComponent convertCharStyleToComponentStyle(String text, char colorChar, TextFormatting defaultColor) {
 		String regex = "(?i)" + CharacterHelper.getJavaUnicodeCode(colorChar) + "[0-9A-FK-OR]|" + CharacterHelper.getJavaUnicodeCode(colorChar) + "#[0-9A-F]{6}";
 		String[] textParts = text.split(regex);
 
