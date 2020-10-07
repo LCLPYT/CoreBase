@@ -68,10 +68,10 @@ public class MixinBucketItem {
 					+ ")Z",
 					at = @At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/world/DimensionType;func_236040_e_()Z"
+							target = "Lnet/minecraft/world/DimensionType;func_236040_e_()Z",
+							remap = false
 							),
-					cancellable = true,
-					remap = false
+					cancellable = true
 			)
 	public void onTryPlaceContainedLiquid(PlayerEntity player, World worldIn, BlockPos posIn, BlockRayTraceResult blockraytraceresult, CallbackInfoReturnable<Boolean> cir) {
 		PlayerBucketEmptyEvent event = new PlayerBucketEmptyEvent(player, player.world, posIn, null, null, null);
