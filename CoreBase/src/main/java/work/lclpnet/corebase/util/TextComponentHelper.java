@@ -8,9 +8,9 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TextComponentHelper {
 
-	public static final Style resetStyleNoColor = Style.field_240709_b_
-			.func_240713_a_(false) // bold
-			.func_240722_b_(false) // italic
+	public static final Style resetStyleNoColor = Style.EMPTY
+			.setBold(false) // bold
+			.setItalic(false) // italic
 			.setUnderlined(false) // underlined
 			.setStrikethrough(false) // strikethrough
 			.setObfuscated(false); // obfuscated
@@ -18,45 +18,50 @@ public class TextComponentHelper {
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_240702_b_(String)}
 	 */
+	@Deprecated
 	public static IFormattableTextComponent appendText(IFormattableTextComponent component, String text) {
-		return component.func_240702_b_(text);
+		return component.appendString(text);
 	}
 	
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_240699_a_(TextFormatting)}
 	 */
+	@Deprecated
 	public static IFormattableTextComponent applyTextStyle(IFormattableTextComponent component, TextFormatting formatting) {
-		return component.func_240699_a_(formatting);
+		return component.mergeStyle(formatting);
 	}
 	
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_240701_a_(TextFormatting...)}
 	 */
+	@Deprecated
 	public static IFormattableTextComponent applyTextStyles(IFormattableTextComponent component, TextFormatting... formattings) {
-		return component.func_240701_a_(formattings);
+		return component.mergeStyle(formattings);
 	}
 	
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_230529_a_(ITextComponent)}
 	 */
+	@Deprecated
 	public static IFormattableTextComponent appendSibling(IFormattableTextComponent component, ITextComponent sibling) {
-		return component.func_230529_a_(sibling);
+		return component.append(sibling);
 	}
 	
 	/**
 	 * Method redirect to {@link IFormattableTextComponent#func_230530_a_(Style)}
 	 */
+	@Deprecated
 	public static IFormattableTextComponent setStyle(IFormattableTextComponent component, Style style) {
-		return component.func_230530_a_(style);
+		return component.setStyle(style);
 	}
 	
 	public static IFormattableTextComponent setStyleColor(IFormattableTextComponent component, Color c) {
-		return setStyle(component, component.getStyle().func_240718_a_(c));
+		return component.setStyle(component.getStyle().setColor(c));
 	}
 	
 	public static boolean hasFormatting(ITextComponent component) {
 		Style style = component.getStyle();
-		return style.func_240711_a_() != null || 
+		return style.getColor() != null || 
 				style.getBold() ||
 				style.getItalic() ||
 				style.getObfuscated() ||

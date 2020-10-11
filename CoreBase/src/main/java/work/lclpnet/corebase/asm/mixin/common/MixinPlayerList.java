@@ -26,7 +26,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import work.lclpnet.corebase.event.custom.PlayerJoinEvent;
-import work.lclpnet.corebase.util.TextComponentHelper;
 
 @Mixin(PlayerList.class)
 public class MixinPlayerList {
@@ -37,8 +36,6 @@ public class MixinPlayerList {
 
 	@Shadow
 	public void func_232641_a_(ITextComponent msg, ChatType type, UUID senderUuid) {}
-
-	// void net.minecraft.server.management.PlayerList.func_232641_a_(ITextComponent p_232641_1_, ChatType p_232641_2_, UUID p_232641_3_)
 
 	@Redirect(
 			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
@@ -82,13 +79,13 @@ public class MixinPlayerList {
 			itextcomponent = new TranslationTextComponent("multiplayer.player.joined.renamed", playerIn.getDisplayName(), s);
 		}
 
-		PlayerJoinEvent event = new PlayerJoinEvent(playerIn, TextComponentHelper.applyTextStyle(itextcomponent, TextFormatting.YELLOW));
+		PlayerJoinEvent event = new PlayerJoinEvent(playerIn, itextcomponent.mergeStyle(TextFormatting.YELLOW));
 		MinecraftForge.EVENT_BUS.post(event);
 
 		ITextComponent itc = event.getJoinMessage();
 		if(itc != null) {
-			this.func_232641_a_(itc, ChatType.SYSTEM, Util.field_240973_b_);
-			playerIn.sendMessage(itc, Util.field_240973_b_); //Is this necessary? 
+			this.func_232641_a_(itc, ChatType.SYSTEM, Util.DUMMY_UUID);
+			playerIn.sendMessage(itc, Util.DUMMY_UUID); //Is this necessary? 
 		}
 	}
 

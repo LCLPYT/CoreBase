@@ -207,7 +207,7 @@ public class PlayerHelper {
 
 	public static void setWalkSpeed(ServerPlayerEntity p, float value) {
 		setSpeed(p, value, "walkSpeed");
-		ModifiableAttributeInstance instance = p.getAttribute(Attributes.field_233821_d_);
+		ModifiableAttributeInstance instance = p.getAttribute(Attributes.MOVEMENT_SPEED);
 		instance.setBaseValue(value);
 	}
 	

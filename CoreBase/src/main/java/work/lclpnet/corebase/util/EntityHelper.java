@@ -60,7 +60,7 @@ public class EntityHelper {
 
 		if (!(entityIn instanceof LivingEntity) || !((LivingEntity)entityIn).isElytraFlying()) {
 			entityIn.setMotion(entityIn.getMotion().mul(1.0D, 0.0D, 1.0D));
-			entityIn.func_230245_c_(true);
+			entityIn.setOnGround(true);
 		}
 	}
 

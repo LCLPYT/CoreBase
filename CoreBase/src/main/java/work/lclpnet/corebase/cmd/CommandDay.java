@@ -61,7 +61,7 @@ public class CommandDay extends CommandBase{
 		
 		setTime(dim, ctx.getSource().getEntity());
 		
-		ResourceLocation dimId = dim.func_234923_W_().func_240901_a_();
+		ResourceLocation dimId = dim.getDimensionKey().getLocation();
 		ctx.getSource().sendFeedback(CoreBase.TEXT.message("Set the time in world " + dimId + " to day.", MessageType.SUCCESS), false);
 		return 0;
 	}
@@ -74,7 +74,7 @@ public class CommandDay extends CommandBase{
 		
 		world.getPlayers().forEach(p -> {
 			p.playSound(SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 1F, 0F);
-			p.sendMessage(msg, Util.field_240973_b_);
+			p.sendMessage(msg, Util.DUMMY_UUID);
 		});
 	}
 

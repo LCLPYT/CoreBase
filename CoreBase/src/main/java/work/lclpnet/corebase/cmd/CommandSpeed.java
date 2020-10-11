@@ -46,7 +46,7 @@ public class CommandSpeed extends CommandBase{
 	}
 
 	private void sendUpdate(float f, String type, ServerPlayerEntity p) {
-		p.sendMessage(CoreBase.TEXT.complexMessage("Set your %s speed to %s.", TextFormatting.GREEN, new Substitute(type), new Substitute(f, TextFormatting.YELLOW)), Util.field_240973_b_);
+		p.sendMessage(CoreBase.TEXT.complexMessage("Set your %s speed to %s.", TextFormatting.GREEN, new Substitute(type), new Substitute(f, TextFormatting.YELLOW)), Util.DUMMY_UUID);
 	}
 	
 	public int reset(CommandContext<CommandSource> ctx) throws CommandSyntaxException {

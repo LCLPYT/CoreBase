@@ -45,7 +45,7 @@ public class ComponentSupplier {
 		}
 		
 		public ITextComponent apply(StringTextComponent component) {
-			return TextComponentHelper.applyTextStyles(component, format);
+			return component.mergeStyle(format);
 		}
 
 		public TextFormatting[] getFormat() {

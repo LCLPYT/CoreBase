@@ -25,7 +25,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import work.lclpnet.corebase.event.custom.PlayerQuitEvent;
 import work.lclpnet.corebase.event.custom.SignChangeEvent;
-import work.lclpnet.corebase.util.TextComponentHelper;
 
 @Mixin(ServerPlayNetHandler.class)
 public class MixinServerPlayNetHandler {
@@ -50,11 +49,11 @@ public class MixinServerPlayNetHandler {
 					)
 			)
 	public void onSendMessage(PlayerList list, ITextComponent msg, ChatType type, UUID uuid) {
-		ITextComponent quitMessage = TextComponentHelper.applyTextStyle(new TranslationTextComponent("multiplayer.player.left", this.player.getDisplayName()), TextFormatting.YELLOW);
+		ITextComponent quitMessage = new TranslationTextComponent("multiplayer.player.left", this.player.getDisplayName()).mergeStyle(TextFormatting.YELLOW);
 		PlayerQuitEvent event = new PlayerQuitEvent(player, quitMessage);
 		MinecraftForge.EVENT_BUS.post(event);
 		quitMessage = event.getQuitMessage();
-		if(quitMessage != null) list.func_232641_a_(quitMessage, ChatType.SYSTEM, Util.field_240973_b_);
+		if(quitMessage != null) list.func_232641_a_(quitMessage, ChatType.SYSTEM, Util.DUMMY_UUID);
 	}
 
 	// PlayerQuitEvent end

@@ -19,7 +19,6 @@ import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.Substitute;
-import work.lclpnet.corebase.util.TextComponentHelper;
 
 public class CommandChatClear extends CommandBase{
 
@@ -54,7 +53,7 @@ public class CommandChatClear extends CommandBase{
 
 		c.getSource().sendFeedback(CoreBase.TEXT.complexMessage("Cleared %s chat.", 
 				TextFormatting.GREEN, 
-				new Substitute(TextComponentHelper.appendText(EntitySelector.joinNames(targets), "'s").getString(), TextFormatting.YELLOW)), false);
+				new Substitute(EntitySelector.joinNames(targets).appendString("'s").getString(), TextFormatting.YELLOW)), false);
 
 		final ITextComponent msg = CoreBase.TEXT.message("Your chat has been cleared.", MessageType.SUCCESS);
 		targets.forEach(p -> clearFor(p, msg));
@@ -63,8 +62,8 @@ public class CommandChatClear extends CommandBase{
 
 	private static void clearFor(PlayerEntity p, ITextComponent msg) {
 		for (int i = 0; i < 99; i++) 
-			p.sendMessage(new StringTextComponent(""), Util.field_240973_b_);
-		p.sendMessage(msg, Util.field_240973_b_);
+			p.sendMessage(new StringTextComponent(""), Util.DUMMY_UUID);
+		p.sendMessage(msg, Util.DUMMY_UUID);
 	}
 
 }

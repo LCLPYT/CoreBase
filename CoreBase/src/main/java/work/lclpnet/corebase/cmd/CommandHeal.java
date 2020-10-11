@@ -62,7 +62,7 @@ public class CommandHeal extends CommandBase{
 	private void heal(ServerPlayerEntity p) {
 		p.setHealth(p.getMaxHealth());
 		p.getFoodStats().setFoodLevel(20);
-		p.sendMessage(CoreBase.TEXT.message("You have been healed.", MessageType.SUCCESS), Util.field_240973_b_);
+		p.sendMessage(CoreBase.TEXT.message("You have been healed.", MessageType.SUCCESS), Util.DUMMY_UUID);
 	}
 	
 }

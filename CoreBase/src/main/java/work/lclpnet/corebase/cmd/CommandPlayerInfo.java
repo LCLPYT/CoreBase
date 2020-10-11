@@ -1,6 +1,5 @@
 package work.lclpnet.corebase.cmd;
 
-import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifierManager;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -23,11 +21,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.ObjectHelper;
-import work.lclpnet.corebase.util.TextComponentHelper;
 
 public class CommandPlayerInfo extends CommandBase{
 
@@ -87,36 +83,22 @@ public class CommandPlayerInfo extends CommandBase{
 			msg(source, "TOTAL-EXP", target.experienceTotal);
 			msg(source, "WALK-SPEED", target.abilities.getWalkSpeed());
 			msg(source, "FLY-SPEED", target.abilities.getFlySpeed());
-			msg(source, "DIMENSION", target.world.func_234923_W_().func_240901_a_());
+			msg(source, "DIMENSION", target.world.getDimensionKey().getLocation());
 			msg(source, "INVULNERABLE", target.abilities.disableDamage);
 
-			msg(source, "ATTRIBUTES", null); // TODO get from attributes modifier map of entity
-			try {
-				Field f = ObfuscationReflectionHelper.findField(AttributeModifierManager.class, "field_233775_b_");
-				f.setAccessible(true);
-				@SuppressWarnings("unchecked")
-				Map<Attribute, ModifiableAttributeInstance> map = (Map<Attribute, ModifiableAttributeInstance>) f.get(target.func_233645_dx_());
-				System.out.println(map);
-				map.forEach((attr, instance) -> msg(source, new TranslationTextComponent(attr.func_233754_c_()), instance.getValue()));
-			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
-			}
+			msg(source, "ATTRIBUTES", null);
+			Map<Attribute, ModifiableAttributeInstance> map = target.getAttributeManager().instanceMap;
+			map.forEach((attr, instance) -> msg(source, new TranslationTextComponent(attr.getAttributeName()), instance.getValue()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void msg(CommandSource source, IFormattableTextComponent itc, @Nullable Object value) {
-		if(value == null) source.sendFeedback(TextComponentHelper.applyTextStyle(itc, TextFormatting.BLUE), false);
+		if(value == null) source.sendFeedback(itc.mergeStyle(TextFormatting.BLUE), false);
 		else {
-			ITextComponent sibling = TextComponentHelper.applyTextStyle(new StringTextComponent(value.toString()), TextFormatting.GREEN);
-			ITextComponent feedback = TextComponentHelper.appendSibling(
-					TextComponentHelper.appendText(
-							TextComponentHelper.applyTextStyle(
-									itc,
-									TextFormatting.DARK_PURPLE),
-							": "),
-					sibling);
+			ITextComponent sibling = new StringTextComponent(value.toString()).mergeStyle(TextFormatting.GREEN);
+			ITextComponent feedback = itc.mergeStyle(TextFormatting.DARK_PURPLE).appendString(": ").append(sibling);
 
 			source.sendFeedback(feedback, false);
 		}

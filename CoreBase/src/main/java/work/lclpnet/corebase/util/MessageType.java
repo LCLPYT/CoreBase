@@ -8,10 +8,10 @@ import net.minecraft.util.text.TextFormatting;
 
 public class MessageType {
 
-	public static final MessageType INFO = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.GRAY)),
-			ERROR = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.RED)),
-			SUCCESS = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.GREEN)),
-			OTHER = new MessageType(c -> TextComponentHelper.applyTextStyle(c, TextFormatting.AQUA));
+	public static final MessageType INFO = new MessageType(c -> c.mergeStyle(TextFormatting.GRAY)),
+			ERROR = new MessageType(c -> c.mergeStyle(TextFormatting.RED)),
+			SUCCESS = new MessageType(c -> c.mergeStyle(TextFormatting.GREEN)),
+			OTHER = new MessageType(c -> c.mergeStyle(TextFormatting.AQUA));
 	
 	private Function<IFormattableTextComponent, ITextComponent> apply;
 	

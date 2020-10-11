@@ -32,7 +32,7 @@ public class CommandRawSay extends CommandBase {
 		System.out.println(itc);
 		if(itc == null) return 1;
 		
-		CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.field_240973_b_);
+		CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.DUMMY_UUID);
 		return 0;
 	}
 

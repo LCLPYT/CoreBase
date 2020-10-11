@@ -38,11 +38,11 @@ public class ComponentHelper {
 	}
 
 	public static IFormattableTextComponent message(String prefix, String msg, MessageType type) {
-		return TextComponentHelper.appendSibling(getPrefix(prefix), type.apply(new StringTextComponent(msg)));
+		return getPrefix(prefix).append(type.apply(new StringTextComponent(msg)));
 	}
 
 	public static IFormattableTextComponent getPrefix(String prefix) {
-		return TextComponentHelper.applyTextStyle(new StringTextComponent(prefix + "> "), TextFormatting.BLUE);
+		return new StringTextComponent(prefix + "> ").mergeStyle(TextFormatting.BLUE);
 	}
 
 	public static IFormattableTextComponent complexMessage(String prefix, String msg, TextFormatting tf, Substitute... substitutes) {
@@ -66,9 +66,8 @@ public class ComponentHelper {
 			if(i < matches.size() && i < substitutes.length) {
 				if(substitutes[i].getObj() instanceof IFormattableTextComponent) {
 					IFormattableTextComponent itc = (IFormattableTextComponent) substitutes[i].getObj();
-					//if(itc.getUnformattedComponentText().equals(itc.getFormattedText()))
 					if(!TextComponentHelper.hasDeepFormatting(itc))
-						TextComponentHelper.applyTextStyles(itc, substitutes[i].getFormat());
+						itc.mergeStyle(substitutes[i].getFormat());
 					components.add(itc);
 				} else {
 					String formatted = String.format(matches.get(i), substitutes[i].getObj());
@@ -80,7 +79,7 @@ public class ComponentHelper {
 		}
 
 		IFormattableTextComponent comp = getPrefix(prefix);
-		components.forEach(c -> TextComponentHelper.appendSibling(comp, c));
+		components.forEach(comp::append);
 		return comp;
 	}
 
@@ -116,7 +115,7 @@ public class ComponentHelper {
 				String controlString = styles.get(i - 1);
 				char formatCode = controlString.charAt(1);
 				if(formatCode == '#') {
-					Color c = Color.func_240745_a_(controlString.substring(1));
+					Color c = Color.fromHex(controlString.substring(1));
 					if(c != null) formattings.add(c);
 				} else {
 					TextFormatting format = getFormattingByFormattingChar(formatCode);
@@ -131,9 +130,9 @@ public class ComponentHelper {
 				for(Object o : formattings) {
 					if(o instanceof TextFormatting) {
 						TextFormatting formatting = (TextFormatting) o;
-						TextComponentHelper.applyTextStyle(root, formatting);
+						root.mergeStyle(formatting);
 						if(formatting == TextFormatting.RESET) 
-							TextComponentHelper.setStyle(root, TextComponentHelper.resetStyleNoColor.func_240718_a_(Color.func_240744_a_(defaultColor)));
+							root.setStyle(TextComponentHelper.resetStyleNoColor.setColor(Color.fromTextFormatting(defaultColor)));
 					} else if(o instanceof Color) {
 						TextComponentHelper.setStyleColor(root, (Color) o);
 					}
@@ -144,15 +143,15 @@ public class ComponentHelper {
 				for(Object o : formattings) {
 					if(o instanceof TextFormatting) {
 						TextFormatting formatting = (TextFormatting) o;
-						TextComponentHelper.applyTextStyle(stc, formatting);
+						stc.mergeStyle(formatting);
 						if(formatting == TextFormatting.RESET) 
-							TextComponentHelper.setStyle(stc, TextComponentHelper.resetStyleNoColor.func_240718_a_(Color.func_240744_a_(defaultColor)));
+							stc.setStyle(TextComponentHelper.resetStyleNoColor.setColor(Color.fromTextFormatting(defaultColor)));
 					} else if(o instanceof Color) {
 						TextComponentHelper.setStyleColor(stc, (Color) o);
 					}
 				}
 				formattings.clear();
-				TextComponentHelper.appendSibling(root, stc);
+				root.append(stc);
 			}
 		}
 

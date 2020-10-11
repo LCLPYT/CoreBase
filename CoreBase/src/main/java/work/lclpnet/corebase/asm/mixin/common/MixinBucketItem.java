@@ -68,8 +68,7 @@ public class MixinBucketItem {
 					+ ")Z",
 					at = @At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/world/DimensionType;func_236040_e_()Z",
-							remap = false
+							target = "Lnet/minecraft/world/DimensionType;isUltrawarm()Z"
 							),
 					cancellable = true
 			)

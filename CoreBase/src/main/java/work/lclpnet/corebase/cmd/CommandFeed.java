@@ -61,7 +61,7 @@ public class CommandFeed extends CommandBase{
 	
 	private void feed(ServerPlayerEntity p) {
 		p.getFoodStats().setFoodLevel(20);
-		p.sendMessage(CoreBase.TEXT.message("You have been feeded.", MessageType.SUCCESS), Util.field_240973_b_);
+		p.sendMessage(CoreBase.TEXT.message("You have been feeded.", MessageType.SUCCESS), Util.DUMMY_UUID);
 	}
 	
 }
