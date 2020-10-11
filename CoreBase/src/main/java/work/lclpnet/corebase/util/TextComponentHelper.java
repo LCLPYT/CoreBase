@@ -73,7 +73,7 @@ public class TextComponentHelper {
 	}
 	
 	public static boolean hasDeepFormatting(IFormattableTextComponent component) {
-		return hasFormatting(component) && component.getSiblings().stream().allMatch(TextComponentHelper::hasFormatting);
+		return hasFormatting(component) || component.getSiblings().stream().anyMatch(TextComponentHelper::hasFormatting);
 	}
 	
 }
