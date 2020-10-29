@@ -6,6 +6,7 @@ Just put the mod inside your `/mods` folder.
 
 ## 1.15.x ONLY:
 In this version, <a href="https://www.curseforge.com/minecraft/mc-mods/mixinbootstrap">MixinBootstrap</a> is required.
+**Please note:** If you are using one of the latest forge 1.15.2 versions, Mixins should also be supported without MixinBootstrap, as in 1.16.
 
 <hr>
 
