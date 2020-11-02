@@ -67,7 +67,7 @@ public class CommandNight extends CommandBase{
 	}
 	
 	private static void setTime(ServerWorld world, @Nullable Entity en) {
-		world.func_241114_a_(16000L);
+		world.setDayTime(16000L);
 		
 		final ITextComponent msg = CoreBase.TEXT.complexMessage("%s has set the time to night.", TextFormatting.GREEN, 
 				new Substitute(en != null ? en.getDisplayName().getString() : "Console", TextFormatting.YELLOW));
