@@ -64,11 +64,11 @@ public class Mojang {
 	}
 
 	/**
-	 * Returns the {@link org.shanerx.mojang.PlayerProfile PlayerProfile} object which holds and represents the metadata for a certain account.
+	 * Returns the {@link PlayerProfile} object which holds and represents the metadata for a certain account.
 	 *
 	 * @param uuid the UUID of the player
 	 *
-	 * @return the {@link org.shanerx.mojang.PlayerProfile PlayerProfile} object}
+	 * @return the {@link PlayerProfile} object}
 	 */
 	public static PlayerProfile getPlayerProfile(String uuid) {
 		JSONObject obj = getJSONObject("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
