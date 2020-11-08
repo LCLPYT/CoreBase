@@ -10,31 +10,45 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
+
+plugins {
+    id 'org.ajoberstar.grgit' version '3.1.1'
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.4.3'
+ext {
+    SPEC_VERSION = '1.5'
+}
+
+def getVersion = {
+    //TAG-offset-hash
+    def raw = grgit.describe(longDescr: true, tags:true)
+    def desc = (raw == null ? '0.0-0-unknown' : grgit.describe(longDescr: true, tags:true)).split('-') as List
+    def hash = desc.remove(desc.size() - 1)
+    def offset = desc.remove(desc.size() - 1)
+    def tag = desc.join('-')
+    def branch = grgit.branch.current().name
+    if (branch in ['master', 'HEAD'])
+        branch = null
+    SPEC_VERSION = tag
+    return "${tag}.${offset}${t -> if (branch != null) t << '-' + branch}".toString()
+}
+
+version = getVersion()
 group = 'work.lclpnet.corebase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'corebase'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
     mappings channel: 'snapshot', version: '20201028-1.16.3'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
@@ -110,13 +124,12 @@ dependencies {
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
             "Specification-Title": "CoreBase",
             "Specification-Vendor": "LCLPNetwork",
-            "Specification-Version": "1", // We are version 1 of ourselves
+            "Specification-Version": SPEC_VERSION, 
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"LCLPNetwork",
@@ -126,10 +139,6 @@ jar {
     }
 }
 
-// Example configuration to allow publishing using the maven-publish task
-// we define a custom artifact that is sourced from the reobfJar output task
-// and then declare that to be published
-// Note you'll need to add a repository here
 def reobfFile = file("$buildDir/reobfJar/output.jar")
 def reobfArtifact = artifacts.add('default', reobfFile) {
     type 'jar'
@@ -145,12 +154,12 @@ publishing {
     }
     repositories {
         maven {
-            if (project.hasProperty('forgeMavenPassword') && project.hasProperty('forgeMavenHost')) {
+            if (project.hasProperty('mavenPassword') && project.hasProperty('mavenHost')) {
                 credentials {
-                    username project.properties.forgeMavenUser
-                    password project.properties.forgeMavenPassword
+                    username project.properties.mavenUser
+                    password project.properties.mavenPassword
                 }
-                url project.properties.forgeMavenHost
+                url project.properties.mavenHost
             } else {
                 url "file:///${project.projectDir}/mcmodsrepo"
             }
@@ -174,18 +183,13 @@ artifacts {
 }
 
 processResources {
-	// This will ensure that this task is redone when the versions change.
 	inputs.property 'version', project.version
 
-	// Replace stuff in mods.toml, nothing else
 	from(sourceSets.main.resources.srcDirs) {
 		include 'META-INF/mods.toml'
-
-		// Replace version
 		expand 'version':project.version
 	}
 
-	// Copy everything else except the mods.toml
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'META-INF/mods.toml'
 	}
