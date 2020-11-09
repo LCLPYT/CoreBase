@@ -15,10 +15,12 @@ import com.mojang.authlib.GameProfile;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.server.management.PlayerProfileCache;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -26,6 +28,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import work.lclpnet.corebase.event.custom.PlayerJoinEvent;
+import work.lclpnet.corebase.event.custom.PlayerSpawnPositionEvent;
 
 @Mixin(PlayerList.class)
 public class MixinPlayerList {
@@ -86,6 +89,23 @@ public class MixinPlayerList {
 		if(itc != null) {
 			this.func_232641_a_(itc, ChatType.SYSTEM, Util.DUMMY_UUID);
 			playerIn.sendMessage(itc, Util.DUMMY_UUID); //Is this necessary? 
+		}
+	}
+	
+	@Redirect(
+			method = "initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/network/play/ServerPlayNetHandler;setPlayerLocation(DDDFF)V"
+					)
+			)
+	public void onSetLocation(ServerPlayNetHandler handler, double x, double y, double z, float yaw, float pitch) {
+		PlayerSpawnPositionEvent event = new PlayerSpawnPositionEvent(handler.player, new Vector3d(x, y, z), yaw, pitch);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(event.isCanceled()) handler.setPlayerLocation(x, y, z, yaw, pitch);
+		else {
+			Vector3d pos = event.getPosition();
+			handler.setPlayerLocation(pos.x, pos.y, pos.z, event.getYaw(), event.getPitch());
 		}
 	}
 
