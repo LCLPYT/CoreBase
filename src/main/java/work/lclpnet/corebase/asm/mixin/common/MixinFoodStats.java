@@ -2,34 +2,140 @@ package work.lclpnet.corebase.asm.mixin.common;
 
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.item.Food;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.FoodStats;
+import net.minecraftforge.common.MinecraftForge;
+import work.lclpnet.corebase.asm.type.IPlayerFoodStats;
+import work.lclpnet.corebase.event.custom.FoodExhaustionLevelChangeEvent;
+import work.lclpnet.corebase.event.custom.FoodLevelChangeEvent;
+import work.lclpnet.corebase.event.custom.FoodSaturationLevelChangeEvent;
 
-@Mixin(value = FoodStats.class, remap = false)
-public abstract class MixinFoodStats {
+@Mixin(FoodStats.class)
+public class MixinFoodStats implements IPlayerFoodStats {
 
-	/*@Override
-	public boolean onChangeFoodLevel(PlayerEntity player, int toLevel, Food food, ItemStack item) {
-		FoodLevelChangeEvent e = new FoodLevelChangeEvent(player, player.getFoodStats().getFoodLevel(), toLevel, item, food);
-		MinecraftForge.EVENT_BUS.post(e);
-		return e.isCanceled();
-	}*/
+	@Shadow
+	private int foodLevel;
+	@Shadow
+	private float foodExhaustionLevel;
+	@Shadow
+	private float foodSaturationLevel;
 	
-	@Inject(
-			method = "Lnet/minecraft/util/FoodStats;addStats(IF)V", 
+	private PlayerEntity player;
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;setFoodLevel(I)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
 					opcode = Opcodes.PUTFIELD
-					),
-			cancellable = true)
-	public void onModifyFoodLevel(int foodLevelIn, float foodSaturationModifier, Food food, ItemStack foodItem, CallbackInfo ci) {
-		System.out.println("FOOD LEVEL MODIFY");
+					)
+			)
+	public void onSetFoodLevel(FoodStats foodStats, int foodLevelIn) {
+		toFoodLevelInternally(foodLevelIn);
+	}
+
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onTickFoodLevel(FoodStats foodStats, int foodLevelIn) {
+		toFoodLevelInternally(foodLevelIn);
+	}
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;addStats(IF)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onAddStatsFoodLevel(FoodStats foodStats, int foodLevelIn) {
+		toFoodLevelInternally(foodLevelIn);
+	}
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;addExhaustion(F)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodExhaustionLevel:F",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onAddExhaustion(FoodStats foodStats, float exhaustionLevelIn) {
+		toExhaustionLevelInternally(exhaustionLevelIn);
+	}
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodExhaustionLevel:F",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onTickExhaustion(FoodStats foodStats, float exhaustionLevelIn) {
+		toExhaustionLevelInternally(exhaustionLevelIn);
+	}
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;addStats(IF)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodSaturationLevel:F",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onAddStatsSaturation(FoodStats foodStats, float saturationLevelIn) {
+		toSaturationLevelInternally(saturationLevelIn);
+	}
+	
+	@Redirect(
+			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			at = @At(
+					value = "FIELD",
+					target = "Lnet/minecraft/util/FoodStats;foodSaturationLevel:F",
+					opcode = Opcodes.PUTFIELD
+					)
+			)
+	public void onTickSaturation(FoodStats foodStats, float saturationLevelIn) {
+		toSaturationLevelInternally(saturationLevelIn);
+	}
+	
+	private void toSaturationLevelInternally(float saturationLevelIn) {
+		FoodSaturationLevelChangeEvent event = new FoodSaturationLevelChangeEvent(player, foodSaturationLevel, saturationLevelIn);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(!event.isCanceled()) foodSaturationLevel = event.getToLevel();
+	}
+	
+	private void toExhaustionLevelInternally(float exhaustionLevelIn) {
+		FoodExhaustionLevelChangeEvent event = new FoodExhaustionLevelChangeEvent(player, foodExhaustionLevel, exhaustionLevelIn);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(!event.isCanceled()) foodExhaustionLevel = event.getToLevel();
+	}
+	
+	private void toFoodLevelInternally(int foodLevelIn) {
+		FoodLevelChangeEvent event = new FoodLevelChangeEvent(player, foodLevel, foodLevelIn);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(!event.isCanceled()) foodLevel = event.getToLevel();
+	}
+
+	@Override
+	public void setPlayer(PlayerEntity player) {
+		this.player = player;
+	}
+
+	@Override
+	public PlayerEntity getPlayer() {
+		return player;
 	}
 	
 }
