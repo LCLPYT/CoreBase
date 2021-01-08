@@ -3,8 +3,8 @@
     "promos": {
         "1.15.2-latest": "1.3.1",
         "1.15.2-recommended": "1.3.1",
-        "1.16.3-latest": "1.4.3",
-        "1.16.3-recommended": "1.4.3"
+        "1.16.3-latest": "1.5.6",
+        "1.16.3-recommended": "1.5.6"
     },
     "1.15.2": {
         "1.3.1": "Fixed a chat formatting issue.",
@@ -14,6 +14,7 @@
         "1.4.0": "1.16.3 compatible.",
         "1.4.1": "Small type changes, cleanup",
         "1.4.2": "Mapping update + text formatting update",
-        "1.4.3": "Important bug fix with text formatting"
+        "1.4.3": "Important bug fix with text formatting",
+        "1.5.7": "More coremod stuff"
     }
 }
