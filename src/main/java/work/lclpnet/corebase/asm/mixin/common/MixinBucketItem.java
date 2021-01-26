@@ -73,6 +73,8 @@ public class MixinBucketItem {
 					cancellable = true
 			)
 	public void onTryPlaceContainedLiquid(PlayerEntity player, World worldIn, BlockPos posIn, BlockRayTraceResult blockraytraceresult, CallbackInfoReturnable<Boolean> cir) {
+		if(player == null) return;
+		
 		PlayerBucketEmptyEvent event = new PlayerBucketEmptyEvent(player, player.world, posIn, null, null, null);
 		MinecraftForge.EVENT_BUS.post(event);
 
