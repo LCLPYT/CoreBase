@@ -2,6 +2,7 @@ package work.lclpnet.corebase.util;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -21,9 +22,11 @@ import com.mojang.authlib.properties.Property;
 
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.management.PlayerList;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.PlayerProfile.TexturesProperty;
 
@@ -202,17 +205,29 @@ public class PlayerHelper {
 	}
 
 	public static void setFlySpeed(ServerPlayerEntity p, float value) {
-		setSpeed(p, value, "flySpeed");
+		setSpeed(p, value, "field_75096_f");
 	}
 
 	public static void setWalkSpeed(ServerPlayerEntity p, float value) {
-		setSpeed(p, value, "walkSpeed");
+		setSpeed(p, value, "field_75097_g");
 		ModifiableAttributeInstance instance = p.getAttribute(Attributes.MOVEMENT_SPEED);
 		instance.setBaseValue(value);
 	}
 	
 	private static void setSpeed(ServerPlayerEntity p, float value, String field) {
-		ObjectHelper.set(p.abilities, field, value);
+		Field f = ObfuscationReflectionHelper.findField(PlayerAbilities.class, field);
+		
+		boolean access = f.isAccessible();
+		if(!access) f.setAccessible(true);
+		
+		try {
+			f.set(p.abilities, value);
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+		}
+		
+		if(!access) f.setAccessible(false);
+		
 		p.sendPlayerAbilities();
 	}
 

@@ -1,19 +1,24 @@
 package work.lclpnet.corebase.asm.mixin.common;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.tileentity.SignTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
@@ -48,7 +53,7 @@ public class MixinServerPlayNetHandler {
 							remap = false
 					)
 			)
-	public void onSendMessage(PlayerList list, ITextComponent msg, ChatType type, UUID uuid) {
+	public void onQuitMessage(PlayerList list, ITextComponent msg, ChatType type, UUID uuid) {
 		ITextComponent quitMessage = new TranslationTextComponent("multiplayer.player.left", this.player.getDisplayName()).mergeStyle(TextFormatting.YELLOW);
 		PlayerQuitEvent event = new PlayerQuitEvent(player, quitMessage);
 		MinecraftForge.EVENT_BUS.post(event);
@@ -60,38 +65,49 @@ public class MixinServerPlayNetHandler {
 
 	// SignChangeEvent start
 
-	@Redirect(
-			method = "Lnet/minecraft/network/play/ServerPlayNetHandler;processUpdateSign(Lnet/minecraft/network/play/client/CUpdateSignPacket;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/network/play/client/CUpdateSignPacket;getLines()[Ljava/lang/String;")
+	@Inject(
+			method = "Lnet/minecraft/network/play/ServerPlayNetHandler;func_244542_a("
+					+ "Lnet/minecraft/network/play/client/CUpdateSignPacket;"
+					+ "Ljava/util/List;"
+					+ ")V",
+					remap = false,
+					at = @At(
+							value = "INVOKE",
+							target = "Ljava/util/List;size()I",
+							remap = false
+							),
+					cancellable = true
 			)
-	public String[] onProcessUpdateSign(CUpdateSignPacket packetIn) {
+	public void onSetSign(CUpdateSignPacket packet, List<String> lines, CallbackInfo ci) {
 		ServerWorld serverworld = this.player.getServerWorld();
-		BlockPos pos = packetIn.getPosition();
-		SignTileEntity signtileentity = (SignTileEntity) serverworld.getTileEntity(pos);
+		BlockPos pos = packet.getPosition();
+		BlockState blockstate = serverworld.getBlockState(pos);
 
-		String[] astring = packetIn.getLines();
-		ITextComponent[] fixedLines = new ITextComponent[astring.length];
-		for(int i = 0; i < astring.length; ++i)
-			fixedLines[i] = new StringTextComponent(TextFormatting.getTextWithoutFormattingCodes(astring[i]));
-
-		SignChangeEvent event = new SignChangeEvent(serverworld, pos, serverworld.getBlockState(pos), fixedLines, player);
+		SignChangeEvent event = new SignChangeEvent(serverworld, pos, blockstate, lines, player);
 		MinecraftForge.EVENT_BUS.post(event);
 
-		if(event.isCanceled()) fixedLines = new StringTextComponent[astring.length];
-		else fixedLines = event.getLines();
+		if(event.isCanceled()) {
+			ci.cancel();
+			return;
+		}
 
-		for(int i = 0; i < astring.length; ++i) 
-			signtileentity.setText(i, fixedLines[i] == null ? new StringTextComponent(""): fixedLines[i]);
+		TileEntity tileentity = serverworld.getTileEntity(pos);
+		if (!(tileentity instanceof SignTileEntity)) {
+			return;
+		}
+		SignTileEntity signtileentity = (SignTileEntity) tileentity;
 
-		return packetIn.getLines();
-	}
+		ITextComponent[] componentLines = event.getComponentLines();
 
-	@Redirect(
-			method = "Lnet/minecraft/network/play/ServerPlayNetHandler;processUpdateSign(Lnet/minecraft/network/play/client/CUpdateSignPacket;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/tileentity/SignTileEntity;setText(ILnet/minecraft/util/text/ITextComponent;)V")
-			)
-	public void onSetText(SignTileEntity ste, int line, ITextComponent text) {
-		// do nothing
+		for(int i = 0; i < lines.size(); ++i) {
+			if(componentLines[i] != null) signtileentity.setText(i, componentLines[i]);
+			else signtileentity.setText(i, new StringTextComponent(lines.get(i)));
+		}
+
+		signtileentity.markDirty();
+		serverworld.notifyBlockUpdate(pos, blockstate, blockstate, 3);
+		
+		ci.cancel();
 	}
 
 	// SignChangeEvent end

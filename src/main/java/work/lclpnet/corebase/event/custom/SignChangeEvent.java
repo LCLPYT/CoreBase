@@ -1,5 +1,7 @@
 package work.lclpnet.corebase.event.custom;
 
+import java.util.List;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,12 +17,14 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class SignChangeEvent extends BlockEvent{
 
-	private ITextComponent[] lines;
+	private List<String> lines;
+	private ITextComponent[] componentLines;
 	private PlayerEntity player;
 	
-	public SignChangeEvent(IWorld world, BlockPos pos, BlockState state, ITextComponent[] lines, PlayerEntity player) {
+	public SignChangeEvent(IWorld world, BlockPos pos, BlockState state, List<String> lines, PlayerEntity player) {
 		super(world, pos, state);
 		this.lines = lines;
+		this.componentLines = new ITextComponent[lines.size()];
 		this.player = player;
 	}
 	
@@ -28,20 +32,28 @@ public class SignChangeEvent extends BlockEvent{
 		return player;
 	}
 	
-	public ITextComponent[] getLines() {
+	public List<String> getLines() {
 		return lines;
 	}
 	
-	public void setLines(ITextComponent[] lines) {
-		this.lines = lines;
+	public void setComponentLine(int lineNumber, ITextComponent s) {
+		componentLines[lineNumber] = s;
 	}
 	
-	public void setLine(int lineNumber, ITextComponent s) {
-		lines[lineNumber] = s;
+	public void setLine(int lineNumber, String s) {
+		lines.set(lineNumber, s);
 	}
 	
-	public ITextComponent getLine(int lineNumber) {
-		return lines[lineNumber];
+	public ITextComponent getComponentLine(int lineNumber) {
+		return componentLines[lineNumber];
+	}
+	
+	public String getLine(int lineNumber) {
+		return lines.get(lineNumber);
+	}
+	
+	public ITextComponent[] getComponentLines() {
+		return componentLines;
 	}
 	
 }
