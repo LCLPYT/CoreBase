@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[35,)"
 issueTrackerURL="https://github.com/LCLPYT/CoreBase/issues"
 displayURL="https://github.com/LCLPYT/CoreBase"
 authors="LCLP"
@@ -19,13 +19,13 @@ license="MIT"
     [[dependencies.corebase]]
         modId="forge"
         mandatory=true
-        versionRange="[34,)"
+        versionRange="[35,)"
         ordering="NONE"
         side="BOTH"
     [[dependencies.corebase]]
         modId="minecraft"
         mandatory=true
-        versionRange="[1.16.3]"
+        versionRange="[1.16.4]"
         ordering="NONE"
         side="BOTH"
 
