@@ -157,7 +157,9 @@ publishing {
     }
     repositories {
         maven {
-            if (privateProps.hasProperty('mavenPassword') && privateProps.hasProperty('mavenHost') && privateProps.hasProperty('mavenUser')) {
+            if (privateProps.containsKey('mavenPassword')
+                    && privateProps.containsKey('mavenHost')
+                    && privateProps.containsKey('mavenUser')) {
                 credentials {
                     username privateProps.getProperty('mavenUser');
                     password privateProps.getProperty('mavenPassword');
