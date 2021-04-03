@@ -45,7 +45,7 @@ if(privatePropsFile.exists())
     privatePropsFile.withInputStream { privateProps.load(it) }
 
 version = getVersion()
-group = 'work.lclpnet.corebase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'work.lclpnet.mods' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'corebase'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
