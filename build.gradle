@@ -40,7 +40,9 @@ def getVersion = {
 }
 
 def privateProps = new Properties()
-file("private.properties").withInputStream { privateProps.load(it) }
+def privatePropsFile = file("private.properties");
+if(privatePropsFile.exists())
+    privatePropsFile.withInputStream { privateProps.load(it) }
 
 version = getVersion()
 group = 'work.lclpnet.corebase' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
