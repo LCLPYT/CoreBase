@@ -36,20 +36,13 @@ public class MixinServerPlayNetHandler {
 
 	@Shadow
 	public ServerPlayerEntity player;
-	@Shadow
-	@Final
-	private MinecraftServer server;
 
 	// PlayerQuitEvent start
 	@Redirect(
-			method = "Lnet/minecraft/network/play/ServerPlayNetHandler;onDisconnect(Lnet/minecraft/util/text/ITextComponent;)V", 
+			method = "onDisconnect(Lnet/minecraft/util/text/ITextComponent;)V",
 			at = @At(
 					value = "INVOKE", 
-					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_("
-							+ "Lnet/minecraft/util/text/ITextComponent;"
-							+ "Lnet/minecraft/util/text/ChatType;"
-							+ "Ljava/util/UUID;"
-							+ ")V",
+					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_(Lnet/minecraft/util/text/ITextComponent;Lnet/minecraft/util/text/ChatType;Ljava/util/UUID;)V",
 							remap = false
 					)
 			)
@@ -66,10 +59,7 @@ public class MixinServerPlayNetHandler {
 	// SignChangeEvent start
 
 	@Inject(
-			method = "Lnet/minecraft/network/play/ServerPlayNetHandler;func_244542_a("
-					+ "Lnet/minecraft/network/play/client/CUpdateSignPacket;"
-					+ "Ljava/util/List;"
-					+ ")V",
+			method = "func_244542_a(Lnet/minecraft/network/play/client/CUpdateSignPacket;Ljava/util/List;)V",
 					remap = false,
 					at = @At(
 							value = "INVOKE",

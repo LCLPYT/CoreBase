@@ -17,14 +17,14 @@ import work.lclpnet.corebase.event.custom.SnowFallEvent;
 public class MixinServerWorld {
 
 	@Redirect(
-			method = "Lnet/minecraft/world/server/ServerWorld;tickEnvironment(Lnet/minecraft/world/chunk/Chunk;I)V",
+			method = "tickEnvironment(Lnet/minecraft/world/chunk/Chunk;I)V",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/world/server/ServerWorld;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Z"
 					)
 			)
 	public boolean onSetBlockState(ServerWorld world, BlockPos pos, BlockState state) {
-		Event event = null;
+		Event event;
 		if(state.getBlock().equals(Blocks.SNOW)) event = new SnowFallEvent(world, pos, state);
 		else if(state.getBlock().equals(Blocks.ICE)) event = new BlockStateToStateEvent(world, pos, world.getBlockState(pos), state);
 		else return false;

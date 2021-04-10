@@ -19,7 +19,7 @@ public abstract class MixinLivingEntity {
 	private float mixinHealthBefore = -1F;
 
 	@Inject(
-			method = "Lnet/minecraft/entity/LivingEntity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
+			method = "attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/entity/LivingEntity;damageEntity(Lnet/minecraft/util/DamageSource;F)V",
@@ -31,7 +31,7 @@ public abstract class MixinLivingEntity {
 	}
 
 	@Inject(
-			method = "Lnet/minecraft/entity/LivingEntity;attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
+			method = "attackEntityFrom(Lnet/minecraft/util/DamageSource;F)Z",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/entity/LivingEntity;damageEntity(Lnet/minecraft/util/DamageSource;F)V",

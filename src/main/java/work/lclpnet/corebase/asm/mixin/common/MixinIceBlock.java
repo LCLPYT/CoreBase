@@ -17,7 +17,7 @@ import work.lclpnet.corebase.event.custom.BlockStateToStateEvent;
 public class MixinIceBlock {
 
 	@Inject(
-			method = "Lnet/minecraft/block/IceBlock;turnIntoWater(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V",
+			method = "turnIntoWater(Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V",
 			at = @At("HEAD"),
 			cancellable = true
 			)

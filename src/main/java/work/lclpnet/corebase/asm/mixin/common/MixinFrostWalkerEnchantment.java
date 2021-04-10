@@ -16,11 +16,7 @@ import work.lclpnet.corebase.event.custom.FrostWalkerEvent;
 public class MixinFrostWalkerEnchantment {
 
 	@Inject(
-			method = "Lnet/minecraft/enchantment/FrostWalkerEnchantment;freezeNearby("
-					+ "Lnet/minecraft/entity/LivingEntity;"
-					+ "Lnet/minecraft/world/World;"
-					+ "Lnet/minecraft/util/math/BlockPos;"
-					+ "I)V",
+			method = "freezeNearby(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;I)V",
 					at = @At("HEAD"),
 					cancellable = true
 			)

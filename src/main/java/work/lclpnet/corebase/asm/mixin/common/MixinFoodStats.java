@@ -27,7 +27,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	private PlayerEntity player;
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;setFoodLevel(I)V",
+			method = "setFoodLevel(I)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
@@ -39,7 +39,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			method = "tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
@@ -51,7 +51,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;addStats(IF)V",
+			method = "addStats(IF)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodLevel:I",
@@ -63,7 +63,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;addExhaustion(F)V",
+			method = "addExhaustion(F)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodExhaustionLevel:F",
@@ -75,7 +75,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			method = "tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodExhaustionLevel:F",
@@ -87,7 +87,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;addStats(IF)V",
+			method = "addStats(IF)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodSaturationLevel:F",
@@ -99,7 +99,7 @@ public class MixinFoodStats implements IPlayerFoodStats {
 	}
 	
 	@Redirect(
-			method = "Lnet/minecraft/util/FoodStats;tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
+			method = "tick(Lnet/minecraft/entity/player/PlayerEntity;)V",
 			at = @At(
 					value = "FIELD",
 					target = "Lnet/minecraft/util/FoodStats;foodSaturationLevel:F",

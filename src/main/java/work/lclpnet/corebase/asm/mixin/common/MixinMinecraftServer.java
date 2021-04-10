@@ -15,12 +15,12 @@ import work.lclpnet.corebase.event.custom.ServerReloadedEvent;
 public class MixinMinecraftServer {
 
 	@Inject(
-			method = "Lnet/minecraft/server/MinecraftServer;func_240780_a_(Ljava/util/Collection;)Ljava/util/concurrent/CompletableFuture;",
+			method = "func_240780_a_(Ljava/util/Collection;)Ljava/util/concurrent/CompletableFuture;",
 			at = @At("TAIL"),
 			remap = false
 			)
 	public void onReload(CallbackInfoReturnable<CompletableFuture<?>> ci) {
-		MinecraftServer ms = (MinecraftServer) ((Object) this);
+		MinecraftServer ms = (MinecraftServer) (Object) this;
 		MinecraftForge.EVENT_BUS.post(new ServerReloadedEvent(ms));
 	}
 	

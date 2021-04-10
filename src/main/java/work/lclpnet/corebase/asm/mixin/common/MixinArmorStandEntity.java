@@ -18,12 +18,7 @@ import work.lclpnet.corebase.event.custom.PlayerArmorStandManipulateEvent;
 public class MixinArmorStandEntity {
 
 	@Inject(
-			method = "Lnet/minecraft/entity/item/ArmorStandEntity;equipOrSwap("
-					+ "Lnet/minecraft/entity/player/PlayerEntity;"
-					+ "Lnet/minecraft/inventory/EquipmentSlotType;"
-					+ "Lnet/minecraft/item/ItemStack;"
-					+ "Lnet/minecraft/util/Hand;"
-					+ ")Z",
+			method = "equipOrSwap(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/inventory/EquipmentSlotType;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;)Z",
 					at = @At(
 							value = "FIELD",
 							target = "Lnet/minecraft/entity/player/PlayerAbilities;isCreativeMode:Z",

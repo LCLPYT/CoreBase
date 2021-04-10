@@ -38,14 +38,10 @@ public class MixinPlayerList {
 	public void func_232641_a_(ITextComponent msg, ChatType type, UUID senderUuid) {}
 
 	@Redirect(
-			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
+			method = "initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
 			at = @At(
 					value = "INVOKE", 
-					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_("
-							+ "Lnet/minecraft/util/text/ITextComponent;"
-							+ "Lnet/minecraft/util/text/ChatType;"
-							+ "Ljava/util/UUID;"
-							+ ")V",
+					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_(Lnet/minecraft/util/text/ITextComponent;Lnet/minecraft/util/text/ChatType;Ljava/util/UUID;)V",
 							remap = false
 					)
 			)
@@ -54,14 +50,10 @@ public class MixinPlayerList {
 	}
 
 	@Inject(
-			method = "Lnet/minecraft/server/management/PlayerList;initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
+			method = "initializeConnectionToPlayer(Lnet/minecraft/network/NetworkManager;Lnet/minecraft/entity/player/ServerPlayerEntity;)V",
 			at = @At(
 					value = "INVOKE", 
-					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_("
-							+ "Lnet/minecraft/util/text/ITextComponent;"
-							+ "Lnet/minecraft/util/text/ChatType;"
-							+ "Ljava/util/UUID;"
-							+ ")V",
+					target = "Lnet/minecraft/server/management/PlayerList;func_232641_a_(Lnet/minecraft/util/text/ITextComponent;Lnet/minecraft/util/text/ChatType;Ljava/util/UUID;)V",
 							remap = false,
 							shift = Shift.AFTER
 					)

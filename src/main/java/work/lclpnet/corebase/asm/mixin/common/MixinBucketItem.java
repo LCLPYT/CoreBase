@@ -27,18 +27,10 @@ import work.lclpnet.corebase.event.custom.PlayerBucketFillEvent;
 public class MixinBucketItem {
 
 	@Inject(
-			method = "Lnet/minecraft/item/BucketItem;onItemRightClick("
-					+ "Lnet/minecraft/world/World;"
-					+ "Lnet/minecraft/entity/player/PlayerEntity;"
-					+ "Lnet/minecraft/util/Hand;"
-					+ ")Lnet/minecraft/util/ActionResult;",
+			method = "onItemRightClick(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/ActionResult;",
 					at = @At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/block/IBucketPickupHandler;pickupFluid("
-									+ "Lnet/minecraft/world/IWorld;"
-									+ "Lnet/minecraft/util/math/BlockPos;"
-									+ "Lnet/minecraft/block/BlockState;"
-									+ ")Lnet/minecraft/fluid/Fluid;"
+							target = "Lnet/minecraft/block/IBucketPickupHandler;pickupFluid(Lnet/minecraft/world/IWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Lnet/minecraft/fluid/Fluid;"
 							),
 					cancellable = true,
 					locals = LocalCapture.CAPTURE_FAILHARD
@@ -60,12 +52,7 @@ public class MixinBucketItem {
 	}
 
 	@Inject(
-			method = "Lnet/minecraft/item/BucketItem;tryPlaceContainedLiquid("
-					+ "Lnet/minecraft/entity/player/PlayerEntity;"
-					+ "Lnet/minecraft/world/World;"
-					+ "Lnet/minecraft/util/math/BlockPos;"
-					+ "Lnet/minecraft/util/math/BlockRayTraceResult;"
-					+ ")Z",
+			method = "tryPlaceContainedLiquid(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockRayTraceResult;)Z",
 					at = @At(
 							value = "INVOKE",
 							target = "Lnet/minecraft/world/DimensionType;isUltrawarm()Z"
