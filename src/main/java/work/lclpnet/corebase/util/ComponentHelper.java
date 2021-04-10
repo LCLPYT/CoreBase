@@ -37,7 +37,7 @@ public class ComponentHelper {
 	}
 
 	public static IFormattableTextComponent message(String prefix, String msg, MessageType type) {
-		return getPrefix(prefix).append(type.apply(new StringTextComponent(msg)));
+		return getPrefix(prefix).appendSibling(type.apply(new StringTextComponent(msg)));
 	}
 
 	public static IFormattableTextComponent getPrefix(String prefix) {
@@ -78,7 +78,7 @@ public class ComponentHelper {
 		}
 
 		IFormattableTextComponent comp = getPrefix(prefix);
-		components.forEach(comp::append);
+		components.forEach(comp::appendSibling);
 		return comp;
 	}
 
@@ -150,7 +150,7 @@ public class ComponentHelper {
 					}
 				}
 				formattings.clear();
-				root.append(stc);
+				root.appendSibling(stc);
 			}
 		}
 

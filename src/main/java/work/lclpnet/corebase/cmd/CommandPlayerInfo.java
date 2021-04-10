@@ -98,7 +98,7 @@ public class CommandPlayerInfo extends CommandBase{
 		if(value == null) source.sendFeedback(itc.mergeStyle(TextFormatting.BLUE), false);
 		else {
 			ITextComponent sibling = new StringTextComponent(value.toString()).mergeStyle(TextFormatting.GREEN);
-			ITextComponent feedback = itc.mergeStyle(TextFormatting.DARK_PURPLE).appendString(": ").append(sibling);
+			ITextComponent feedback = itc.mergeStyle(TextFormatting.DARK_PURPLE).appendString(": ").appendSibling(sibling);
 
 			source.sendFeedback(feedback, false);
 		}
