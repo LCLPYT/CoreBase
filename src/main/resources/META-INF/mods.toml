@@ -1,31 +1,31 @@
-modLoader="javafml"
-loaderVersion="[35,)"
-issueTrackerURL="https://github.com/LCLPYT/CoreBase/issues"
-displayURL="https://github.com/LCLPYT/CoreBase"
-authors="LCLP"
-license="MIT"
+modLoader = "javafml"
+loaderVersion = "[35,)"
+issueTrackerURL = "https://github.com/LCLPYT/CoreBase/issues"
+displayURL = "https://github.com/LCLPYT/CoreBase"
+authors = "LCLP"
+license = "MIT"
 
 [[mods]]
-    modId="corebase"
-    version="${version}"
-    displayName="CoreBase"
-    updateJSONURL="https://raw.githubusercontent.com/LCLPYT/CoreBase/master/update.json"
-    logoFile="logo.png"
-    credits="LCLPNetwork!"
-    description='''
+modId = "corebase"
+version = "${version}"
+displayName = "CoreBase"
+updateJSONURL = "https://raw.githubusercontent.com/LCLPYT/CoreBase/master/update.json"
+logoFile = "logo.png"
+credits = "LCLPNetwork!"
+description = '''
     A base for modding by LCLP.
     '''
-    
-    [[dependencies.corebase]]
-        modId="forge"
-        mandatory=true
-        versionRange="[35,)"
-        ordering="NONE"
-        side="BOTH"
-    [[dependencies.corebase]]
-        modId="minecraft"
-        mandatory=true
-        versionRange="[1.16.4]"
-        ordering="NONE"
-        side="BOTH"
+
+[[dependencies.corebase]]
+modId = "forge"
+mandatory = true
+versionRange = "[35,)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.corebase]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.4]"
+ordering = "NONE"
+side = "BOTH"
 

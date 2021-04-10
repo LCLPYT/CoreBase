@@ -1,8 +1,5 @@
 package work.lclpnet.corebase;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -15,61 +12,63 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import work.lclpnet.corebase.cmd.CoreCommands;
 import work.lclpnet.corebase.util.ComponentSupplier;
 
 @Mod(CoreBase.MODID)
 public class CoreBase {
-	
-	public static final String MODID = "corebase";
-	private static final Logger LOGGER = LogManager.getLogger();
-	public static final ComponentSupplier TEXT = new ComponentSupplier("CoreBase");
-	public static volatile boolean active = false;
-	private static MinecraftServer server = null;
 
-	public CoreBase() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+    public static final String MODID = "corebase";
+    private static final Logger LOGGER = LogManager.getLogger();
+    public static final ComponentSupplier TEXT = new ComponentSupplier("CoreBase");
+    public static volatile boolean active = false;
+    private static MinecraftServer server = null;
 
-		IEventBus bus = MinecraftForge.EVENT_BUS;
-		bus.register(this);
-	}
+    public CoreBase() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-	private void setup(final FMLCommonSetupEvent event) { //preinit
-		LOGGER.info("CoreBase initializing...");
-		
-		LOGGER.info("CoreBase initialized.");
-	}
+        IEventBus bus = MinecraftForge.EVENT_BUS;
+        bus.register(this);
+    }
 
-	@SubscribeEvent
-	public void onServerStarting(FMLServerStartingEvent e) {
-		LOGGER.info("CoreBase starting...");
-		server = e.getServer();
-	}
-	
-	@SubscribeEvent
-	public void onRegisterCommands(RegisterCommandsEvent e) {
-		CoreCommands.registerCommands(e.getDispatcher(), e.getEnvironment());
-	}
+    private void setup(final FMLCommonSetupEvent event) { //preinit
+        LOGGER.info("CoreBase initializing...");
 
-	@SubscribeEvent
-	public void onServerStarted(FMLServerStartedEvent e) {
-		LOGGER.info("CoreBase started.");
-		active = true;
-	}
-	
-	@SubscribeEvent
-	public void onServerStop(FMLServerStoppingEvent e) {
-		LOGGER.info("CoreBase stopping...");
-		active = false;
-	}
-	
-	@SubscribeEvent
-	public void onServerStopped(FMLServerStoppedEvent e) {
-		LOGGER.info("CoreBase stopped.");
-	}
-	
-	public static MinecraftServer getServer() {
-		return server;
-	}
-	
+        LOGGER.info("CoreBase initialized.");
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(FMLServerStartingEvent e) {
+        LOGGER.info("CoreBase starting...");
+        server = e.getServer();
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent e) {
+        CoreCommands.registerCommands(e.getDispatcher(), e.getEnvironment());
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(FMLServerStartedEvent e) {
+        LOGGER.info("CoreBase started.");
+        active = true;
+    }
+
+    @SubscribeEvent
+    public void onServerStop(FMLServerStoppingEvent e) {
+        LOGGER.info("CoreBase stopping...");
+        active = false;
+    }
+
+    @SubscribeEvent
+    public void onServerStopped(FMLServerStoppedEvent e) {
+        LOGGER.info("CoreBase stopped.");
+    }
+
+    public static MinecraftServer getServer() {
+        return server;
+    }
+
 }

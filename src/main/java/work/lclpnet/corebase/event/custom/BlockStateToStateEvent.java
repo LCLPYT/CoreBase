@@ -11,17 +11,17 @@ import net.minecraftforge.eventbus.api.Cancelable;
  * This event is {@link Cancelable}.
  */
 @Cancelable
-public class BlockStateToStateEvent extends BlockEvent{
+public class BlockStateToStateEvent extends BlockEvent {
 
-	private BlockState to;
-	
-	public BlockStateToStateEvent(IWorld world, BlockPos pos, BlockState state, BlockState to) {
-		super(world, pos, state);
-		this.to = to;
-	}
-	
-	public BlockState getTo() {
-		return to;
-	}
-	
+    private BlockState to;
+
+    public BlockStateToStateEvent(IWorld world, BlockPos pos, BlockState state, BlockState to) {
+        super(world, pos, state);
+        this.to = to;
+    }
+
+    public BlockState getTo() {
+        return to;
+    }
+
 }

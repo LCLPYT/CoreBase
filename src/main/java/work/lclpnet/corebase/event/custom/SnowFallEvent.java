@@ -11,10 +11,10 @@ import net.minecraftforge.eventbus.api.Cancelable;
  * This event is {@link Cancelable}.
  */
 @Cancelable
-public class SnowFallEvent extends BlockEvent{
+public class SnowFallEvent extends BlockEvent {
 
-	public SnowFallEvent(IWorld world, BlockPos pos, BlockState state) {
-		super(world, pos, state);
-	}
-	
+    public SnowFallEvent(IWorld world, BlockPos pos, BlockState state) {
+        super(world, pos, state);
+    }
+
 }

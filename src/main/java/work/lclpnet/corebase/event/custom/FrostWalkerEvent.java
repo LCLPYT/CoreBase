@@ -9,10 +9,10 @@ import net.minecraftforge.eventbus.api.Cancelable;
  * This event is {@link Cancelable}.
  */
 @Cancelable
-public class FrostWalkerEvent extends LivingEvent{
+public class FrostWalkerEvent extends LivingEvent {
 
-	public FrostWalkerEvent(LivingEntity issuer) {
-		super(issuer);
-	}
-	
+    public FrostWalkerEvent(LivingEntity issuer) {
+        super(issuer);
+    }
+
 }

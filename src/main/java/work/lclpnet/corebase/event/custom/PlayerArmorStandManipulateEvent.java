@@ -20,7 +20,7 @@ public class PlayerArmorStandManipulateEvent extends PlayerEvent {
     }
 
     public ArmorStandEntity getTarget() {
-		return target;
-	}
+        return target;
+    }
 
 }

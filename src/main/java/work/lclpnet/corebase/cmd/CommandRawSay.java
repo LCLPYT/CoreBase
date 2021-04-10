@@ -3,7 +3,6 @@ package work.lclpnet.corebase.cmd;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.Util;
@@ -14,26 +13,26 @@ import work.lclpnet.corebase.util.ComponentHelper;
 
 public class CommandRawSay extends CommandBase {
 
-	public CommandRawSay() {
-		super("rawsay");
-	}
+    public CommandRawSay() {
+        super("rawsay");
+    }
 
-	@Override
-	protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
-		return builder
-				.requires(CoreCommands::permLevel2)
-				.then(Commands.argument("message", StringArgumentType.greedyString())
-						.executes(this::rawSay));
-	}
-	
-	public int rawSay(CommandContext<CommandSource> ctx) {
-		String msg = ctx.getArgument("message", String.class);
-		ITextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(msg, '&');
-		System.out.println(itc);
-		if(itc == null) return 1;
-		
-		CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.DUMMY_UUID);
-		return 0;
-	}
+    @Override
+    protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
+        return builder
+                .requires(CoreCommands::permLevel2)
+                .then(Commands.argument("message", StringArgumentType.greedyString())
+                        .executes(this::rawSay));
+    }
+
+    public int rawSay(CommandContext<CommandSource> ctx) {
+        String msg = ctx.getArgument("message", String.class);
+        ITextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(msg, '&');
+        System.out.println(itc);
+        if (itc == null) return 1;
+
+        CoreBase.getServer().getPlayerList().func_232641_a_(itc, ChatType.SYSTEM, Util.DUMMY_UUID);
+        return 0;
+    }
 
 }

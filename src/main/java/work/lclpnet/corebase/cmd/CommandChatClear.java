@@ -1,11 +1,8 @@
 package work.lclpnet.corebase.cmd;
 
-import java.util.List;
-
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
@@ -20,50 +17,52 @@ import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.Substitute;
 
-public class CommandChatClear extends CommandBase{
+import java.util.List;
 
-	public CommandChatClear() {
-		super("chatclear");
-		addAlias("cc");
-	}
-	
-	@Override
-	protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
-		return builder
-				.requires(CoreCommands::permLevel2)
-				.executes(CommandChatClear::clearAll)
-				.then(Commands.argument("target", EntityArgument.players())
-						.executes(CommandChatClear::clearSingle));
-	}
+public class CommandChatClear extends CommandBase {
 
-	private static int clearAll(CommandContext<CommandSource> c) {
-		final ITextComponent msg = CoreBase.TEXT.message("Chat has been cleared.", MessageType.SUCCESS);
-		CoreBase.getServer().getPlayerList().getPlayers().forEach(p -> clearFor(p, msg));
-		return 0;
-	}
+    public CommandChatClear() {
+        super("chatclear");
+        addAlias("cc");
+    }
 
-	private static int clearSingle(CommandContext<CommandSource> c) throws CommandSyntaxException {
-		EntitySelector selector = c.getArgument("target", EntitySelector.class);
-		List<ServerPlayerEntity> targets = selector.selectPlayers(c.getSource());
+    @Override
+    protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
+        return builder
+                .requires(CoreCommands::permLevel2)
+                .executes(CommandChatClear::clearAll)
+                .then(Commands.argument("target", EntityArgument.players())
+                        .executes(CommandChatClear::clearSingle));
+    }
 
-		if(targets == null || targets.isEmpty()) {
-			c.getSource().sendErrorMessage(CoreBase.TEXT.message("No players were found.", MessageType.ERROR));
-			return 1;
-		}
+    private static int clearAll(CommandContext<CommandSource> c) {
+        final ITextComponent msg = CoreBase.TEXT.message("Chat has been cleared.", MessageType.SUCCESS);
+        CoreBase.getServer().getPlayerList().getPlayers().forEach(p -> clearFor(p, msg));
+        return 0;
+    }
 
-		c.getSource().sendFeedback(CoreBase.TEXT.complexMessage("Cleared %s chat.", 
-				TextFormatting.GREEN, 
-				new Substitute(EntitySelector.joinNames(targets).appendString("'s").getString(), TextFormatting.YELLOW)), false);
+    private static int clearSingle(CommandContext<CommandSource> c) throws CommandSyntaxException {
+        EntitySelector selector = c.getArgument("target", EntitySelector.class);
+        List<ServerPlayerEntity> targets = selector.selectPlayers(c.getSource());
 
-		final ITextComponent msg = CoreBase.TEXT.message("Your chat has been cleared.", MessageType.SUCCESS);
-		targets.forEach(p -> clearFor(p, msg));
-		return 0;
-	}
+        if (targets == null || targets.isEmpty()) {
+            c.getSource().sendErrorMessage(CoreBase.TEXT.message("No players were found.", MessageType.ERROR));
+            return 1;
+        }
 
-	private static void clearFor(PlayerEntity p, ITextComponent msg) {
-		for (int i = 0; i < 99; i++) 
-			p.sendMessage(new StringTextComponent(""), Util.DUMMY_UUID);
-		p.sendMessage(msg, Util.DUMMY_UUID);
-	}
+        c.getSource().sendFeedback(CoreBase.TEXT.complexMessage("Cleared %s chat.",
+                TextFormatting.GREEN,
+                new Substitute(EntitySelector.joinNames(targets).appendString("'s").getString(), TextFormatting.YELLOW)), false);
+
+        final ITextComponent msg = CoreBase.TEXT.message("Your chat has been cleared.", MessageType.SUCCESS);
+        targets.forEach(p -> clearFor(p, msg));
+        return 0;
+    }
+
+    private static void clearFor(PlayerEntity p, ITextComponent msg) {
+        for (int i = 0; i < 99; i++)
+            p.sendMessage(new StringTextComponent(""), Util.DUMMY_UUID);
+        p.sendMessage(msg, Util.DUMMY_UUID);
+    }
 
 }

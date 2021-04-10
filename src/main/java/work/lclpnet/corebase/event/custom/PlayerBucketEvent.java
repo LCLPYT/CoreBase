@@ -15,13 +15,13 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class PlayerBucketEvent extends PlayerEvent {
 
-	private BlockPos block, blockClicked;
-	private Direction blockFace;
-	private ItemStack item;
-	private IWorld world;
-	
+    private BlockPos block, blockClicked;
+    private Direction blockFace;
+    private ItemStack item;
+    private IWorld world;
+
     public PlayerBucketEvent(final PlayerEntity player, final IWorld world, final BlockPos block, final BlockPos blockClicked,
-    		final Direction blockFace, final ItemStack item) {
+                             final Direction blockFace, final ItemStack item) {
         super(player);
         this.world = world;
         this.block = block;
@@ -29,25 +29,25 @@ public class PlayerBucketEvent extends PlayerEvent {
         this.blockFace = blockFace;
         this.item = item;
     }
-    
+
     public IWorld getWorld() {
-		return world;
-	}
-    
+        return world;
+    }
+
     public BlockPos getBlock() {
-		return block;
-	}
-    
+        return block;
+    }
+
     public BlockPos getBlockClicked() {
-		return blockClicked;
-	}
-    
+        return blockClicked;
+    }
+
     public Direction getBlockFace() {
-		return blockFace;
-	}
-    
+        return blockFace;
+    }
+
     public ItemStack getItem() {
-		return item;
-	}
-    
+        return item;
+    }
+
 }

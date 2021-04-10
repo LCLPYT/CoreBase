@@ -21,28 +21,28 @@ public class UUIDHelper {
     public static String addDashes(String uuid) {
         uuid = uuid.replace("-", "");
         Matcher matcher = DASHLESS_PATTERN.matcher(uuid);
-        if(!matcher.matches()) throw new IllegalArgumentException("Invalid UUID format");
+        if (!matcher.matches()) throw new IllegalArgumentException("Invalid UUID format");
         return matcher.replaceAll("$1-$2-$3-$4-$5");
     }
-    
-    public static String removeDashes(String uuid) {
-    	return uuid.replaceAll("-", "");
-    }
-	
-	public static String getUuid(String name) {
-		return Mojang.getUUIDOfUsername(name);
-	}
 
-	public static String getName(String uuid) {
-		Map<String, Long> history = Mojang.getNameHistoryOfPlayer(removeDashes(uuid));
-		
-		Entry<String, Long> latest = null;
-		for(Entry<String, Long> e : history.entrySet()) {
-			if(latest == null) latest = e;
-			if(e.getValue() > latest.getValue()) latest = e;
-		}
-		
-		return latest.getKey();
-	}
-	
+    public static String removeDashes(String uuid) {
+        return uuid.replaceAll("-", "");
+    }
+
+    public static String getUuid(String name) {
+        return Mojang.getUUIDOfUsername(name);
+    }
+
+    public static String getName(String uuid) {
+        Map<String, Long> history = Mojang.getNameHistoryOfPlayer(removeDashes(uuid));
+
+        Entry<String, Long> latest = null;
+        for (Entry<String, Long> e : history.entrySet()) {
+            if (latest == null) latest = e;
+            if (e.getValue() > latest.getValue()) latest = e;
+        }
+
+        return latest.getKey();
+    }
+
 }

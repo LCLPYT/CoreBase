@@ -1,29 +1,29 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "compatibilityLevel": "JAVA_8",
-    "mixinPriority": 1,
-    "package": "work.lclpnet.corebase.asm.mixin",
-    "refmap": "corebase.refmap.json",
-    "mixins": [
-        "common.MixinServerPlayNetHandler",
-        "common.MixinMinecraftServer",
-        "common.MixinPlayerList",
-        "common.MixinLivingEntity",
-        "common.MixinIceBlock",
-        "common.MixinServerWorld",
-        "common.MixinSnowBlock",
-        "common.MixinArmorStandEntity",
-        "common.MixinFrostWalkerEnchantment",
-        "common.MixinBucketItem",
-        "common.MixinFoodStats",
-        "common.MixinPlayerEntity"
-    ],
-    "client": [
-    ],
-    "server": [
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixinPriority": 1,
+  "package": "work.lclpnet.corebase.asm.mixin",
+  "refmap": "corebase.refmap.json",
+  "mixins": [
+    "common.MixinArmorStandEntity",
+    "common.MixinBucketItem",
+    "common.MixinFoodStats",
+    "common.MixinFrostWalkerEnchantment",
+    "common.MixinIceBlock",
+    "common.MixinLivingEntity",
+    "common.MixinMinecraftServer",
+    "common.MixinPlayerEntity",
+    "common.MixinPlayerList",
+    "common.MixinServerPlayNetHandler",
+    "common.MixinServerWorld",
+    "common.MixinSnowBlock"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
   }
+}

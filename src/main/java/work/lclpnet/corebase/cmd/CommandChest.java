@@ -3,7 +3,6 @@ package work.lclpnet.corebase.cmd;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import net.minecraft.block.EnderChestBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -21,57 +20,57 @@ import work.lclpnet.corebase.CoreBase;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.Substitute;
 
-public class CommandChest extends CommandBase{
+public class CommandChest extends CommandBase {
 
-	public CommandChest() {
-		super("chest");
-	}
+    public CommandChest() {
+        super("chest");
+    }
 
-	@Override
-	protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
-		return builder
-				.requires(CoreCommands::isPlayerPermLevel2)
-				.executes(CommandChest::openSelf)
-				.then(Commands.argument("target", EntityArgument.player())
-						.executes(CommandChest::openOther));
-	}
-	
-	private static int openSelf(CommandContext<CommandSource> c) throws CommandSyntaxException {
-		ServerPlayerEntity p = c.getSource().asPlayer();
-		if(p == null) return 1;
+    @Override
+    protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
+        return builder
+                .requires(CoreCommands::isPlayerPermLevel2)
+                .executes(CommandChest::openSelf)
+                .then(Commands.argument("target", EntityArgument.player())
+                        .executes(CommandChest::openOther));
+    }
 
-		openFor(p, p);
-		c.getSource().sendFeedback(CoreBase.TEXT.message("Opened your ender chest.", MessageType.SUCCESS), false);
+    private static int openSelf(CommandContext<CommandSource> c) throws CommandSyntaxException {
+        ServerPlayerEntity p = c.getSource().asPlayer();
+        if (p == null) return 1;
 
-		return 0;
-	}
+        openFor(p, p);
+        c.getSource().sendFeedback(CoreBase.TEXT.message("Opened your ender chest.", MessageType.SUCCESS), false);
 
-	private static int openOther(CommandContext<CommandSource> c) throws CommandSyntaxException {
-		ServerPlayerEntity p = c.getSource().asPlayer();
-		if(p == null) return 1;
-		
-		EntitySelector selector = c.getArgument("target", EntitySelector.class);
-		ServerPlayerEntity target = selector.selectOnePlayer(c.getSource());
+        return 0;
+    }
 
-		c.getSource().sendFeedback(CoreBase.TEXT.complexMessage("Opened %s ender chest.", TextFormatting.GREEN, new Substitute(target.getName().getString() + "'s", TextFormatting.YELLOW)), false);
+    private static int openOther(CommandContext<CommandSource> c) throws CommandSyntaxException {
+        ServerPlayerEntity p = c.getSource().asPlayer();
+        if (p == null) return 1;
 
-		openFor(p, target);
-		return 0;
-	}
+        EntitySelector selector = c.getArgument("target", EntitySelector.class);
+        ServerPlayerEntity target = selector.selectOnePlayer(c.getSource());
 
-	/**
-	 * @see EnderChestBlock 
-	 * @param executor The player who will be viewing the gui
-	 * @param p The player from whom to show the ender chest
-	 */
-	public static void openFor(ServerPlayerEntity executor, PlayerEntity p) {
-		EnderChestInventory inv = p.getInventoryEnderChest();
+        c.getSource().sendFeedback(CoreBase.TEXT.complexMessage("Opened %s ender chest.", TextFormatting.GREEN, new Substitute(target.getName().getString() + "'s", TextFormatting.YELLOW)), false);
 
-		INamedContainerProvider incp = new SimpleNamedContainerProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
+        openFor(p, target);
+        return 0;
+    }
+
+    /**
+     * @param executor The player who will be viewing the gui
+     * @param p        The player from whom to show the ender chest
+     * @see EnderChestBlock
+     */
+    public static void openFor(ServerPlayerEntity executor, PlayerEntity p) {
+        EnderChestInventory inv = p.getInventoryEnderChest();
+
+        INamedContainerProvider incp = new SimpleNamedContainerProvider((p_226928_1_, p_226928_2_, p_226928_3_) -> {
             return ChestContainer.createGeneric9X3(p_226928_1_, p_226928_2_, inv);
-         }, new StringTextComponent(p.getName().getString() + "'s Enderchest"));
-		
-		executor.openContainer(incp);
-	}
-	
+        }, new StringTextComponent(p.getName().getString() + "'s Enderchest"));
+
+        executor.openContainer(incp);
+    }
+
 }

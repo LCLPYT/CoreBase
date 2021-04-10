@@ -10,8 +10,8 @@ import net.minecraftforge.eventbus.api.Cancelable;
  */
 public class FoodEvent extends PlayerEvent {
 
-	public FoodEvent(PlayerEntity player) {
-		super(player);
-	}
+    public FoodEvent(PlayerEntity player) {
+        super(player);
+    }
 
 }

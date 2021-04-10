@@ -10,24 +10,24 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class FoodLevelChangeEvent extends FoodEvent {
 
-	private int fromLevel, toLevel;
-	
-	public FoodLevelChangeEvent(PlayerEntity player, int fromLevel, int toLevel) {
-		super(player);
-		this.fromLevel = fromLevel;
-		this.toLevel = toLevel;
-	}
-	
-	public int getFromLevel() {
-		return fromLevel;
-	}
-	
-	public int getToLevel() {
-		return toLevel;
-	}
-	
-	public void setToLevel(int toLevel) {
-		this.toLevel = toLevel;
-	}
-	
+    private int fromLevel, toLevel;
+
+    public FoodLevelChangeEvent(PlayerEntity player, int fromLevel, int toLevel) {
+        super(player);
+        this.fromLevel = fromLevel;
+        this.toLevel = toLevel;
+    }
+
+    public int getFromLevel() {
+        return fromLevel;
+    }
+
+    public int getToLevel() {
+        return toLevel;
+    }
+
+    public void setToLevel(int toLevel) {
+        this.toLevel = toLevel;
+    }
+
 }

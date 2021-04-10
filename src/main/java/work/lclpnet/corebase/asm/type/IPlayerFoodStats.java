@@ -5,12 +5,12 @@ import net.minecraft.util.FoodStats;
 
 public interface IPlayerFoodStats {
 
-	void setPlayer(PlayerEntity player);
-	
-	PlayerEntity getPlayer();
-	
-	public static IPlayerFoodStats get(FoodStats stats) {
-		return (IPlayerFoodStats) stats;
-	}
-	
+    void setPlayer(PlayerEntity player);
+
+    PlayerEntity getPlayer();
+
+    public static IPlayerFoodStats get(FoodStats stats) {
+        return (IPlayerFoodStats) stats;
+    }
+
 }

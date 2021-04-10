@@ -10,24 +10,24 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class FoodSaturationLevelChangeEvent extends FoodEvent {
 
-	private float fromLevel, toLevel;
-	
-	public FoodSaturationLevelChangeEvent(PlayerEntity player, float saturationLevelFrom, float saturationLevelTo) {
-		super(player);
-		this.fromLevel = saturationLevelFrom;
-		this.toLevel = saturationLevelTo;
-	}
-	
-	public float getFromLevel() {
-		return fromLevel;
-	}
-	
-	public float getToLevel() {
-		return toLevel;
-	}
-	
-	public void setToLevel(float toLevel) {
-		this.toLevel = toLevel;
-	}
+    private float fromLevel, toLevel;
+
+    public FoodSaturationLevelChangeEvent(PlayerEntity player, float saturationLevelFrom, float saturationLevelTo) {
+        super(player);
+        this.fromLevel = saturationLevelFrom;
+        this.toLevel = saturationLevelTo;
+    }
+
+    public float getFromLevel() {
+        return fromLevel;
+    }
+
+    public float getToLevel() {
+        return toLevel;
+    }
+
+    public void setToLevel(float toLevel) {
+        this.toLevel = toLevel;
+    }
 
 }

@@ -1,8 +1,8 @@
 package work.lclpnet.corebase.event.custom;
 
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /**
  * Called when a player joins a server
